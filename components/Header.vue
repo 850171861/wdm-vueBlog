@@ -1,66 +1,65 @@
 <template>
-  <div class="m-header">
-    <div class="container">
-      <a-row>
-        <div class="logo">
-          <a-col :span="2">
-            DMblog
-          </a-col>
-        </div>
-        <a-col :span="16">
-          <ul class="nav">
-            <li><i></i> 首页</li>
-            <li><i></i> 档案</li>
-            <li><i></i> 标签</li>
-            <li><i></i> 关于</li>
-          </ul>
-        </a-col>
-        <a-col :span="6">
-          <ul class="nav-user">
-            <template v-if="user">
-              <li>登录</li>
-              <li>注册</li>
-            </template>
-
-            <template v-else>
-              <li>未登录</li>
-              <li>未注册</li>
-            </template>
-          </ul>
-        </a-col>
-      </a-row>
+  <header class="header">
+    <div class="nav">
+      <h2 class="logo"><a href="/"> blog</a></h2>
+      <ul class="nav-box">
+        <nuxt-link to="/"
+                   tag="li">代码</nuxt-link>
+        <nuxt-link to="/"
+                   tag="li">分类</nuxt-link>
+        <nuxt-link to="/"
+                   tag="li">归档</nuxt-link>
+        <nuxt-link to="/"
+                   tag="li">关于</nuxt-link>
+      </ul>
+      <a-input-search placeholder="input search text"
+                      style="width: 200px"
+                      @search="onSearch" />
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
 
 export default {
+  name: 'Header',
   data () {
     return {
       user: true
     }
-  }
+  },
+  methods: {
+    onSearch (value) {
+      console.log(value);
+    },
+  },
 }
 </script>
 
 <style lang="scss" scope>
-.m-header {
+.header {
+  background-color: #fff;
   height: 60px;
-  background: #393d49;
-  color: #ffffff;
-  overflow: hidden;
-  .container {
-    max-width: 1280px;
-    margin: auto;
-    .nav {
-      list-style-type: none;
+  width: 100%;
+  .nav {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    .logo {
+      padding-left: 20px;
+    }
+    .nav-box {
       display: flex;
       li {
-        width: 110px;
-        font-size: 14px;
-        line-height: 60px;
-        text-align: center;
+        padding: 0 15px;
+        list-style: none;
+        cursor: pointer;
+        font-size: 13px;
+        color: #666;
       }
     }
   }

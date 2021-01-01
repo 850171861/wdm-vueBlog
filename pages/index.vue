@@ -1,68 +1,26 @@
 <template>
-  <div class="container">
-    <div>
-      <h1 class="title">
-        blog
-      </h1>
-      <h2 class="subtitle">
-        <a-button type="primary">Button</a-button>
-
-        My wondrous Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/"
-           target="_blank"
-           class="button--green">
-          Documentation
-        </a>
-        <a href="https://github.com/nuxt/nuxt.js"
-           target="_blank"
-           class="button--grey">
-          GitHub
-        </a>
-      </div>
-    </div>
+  <div class="index">
+    <list></list>
   </div>
 </template>
 
 <script>
 
-
+import list from '@/components/ArticleList.vue'
 export default {
+  name: 'index',
   components: {
-
+    'list': list
   }
 }
 </script>
 
-<style>
-.header {
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+<style lang="scss" scope>
+.index {
+  width: 855px;
+  background: #fff;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 6px;
 }
 </style>
