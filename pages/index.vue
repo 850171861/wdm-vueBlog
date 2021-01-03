@@ -16,11 +16,4 @@ export default {
 </script>
 
 <style lang="scss" scope>
-.index {
-  width: 855px;
-  background: #fff;
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 6px;
-}
 </style>

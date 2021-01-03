@@ -1,16 +1,16 @@
 <template>
   <header class="header">
     <div class="nav">
-      <h2 class="logo"><a href="/"> blog</a></h2>
+      <h2 class="logo"><a href="/"> DMblog</a></h2>
       <ul class="nav-box">
         <nuxt-link to="/"
                    tag="li">代码</nuxt-link>
         <nuxt-link to="/"
-                   tag="li">分类</nuxt-link>
-        <nuxt-link to="/"
+                   tag="li">仓库</nuxt-link>
+        <nuxt-link to="/archive"
                    tag="li">归档</nuxt-link>
-        <nuxt-link to="/"
-                   tag="li">关于</nuxt-link>
+        <nuxt-link to="/about"
+                   tag="li">关于我</nuxt-link>
       </ul>
       <a-input-search placeholder="input search text"
                       style="width: 200px"
@@ -30,7 +30,9 @@ export default {
   },
   methods: {
     onSearch (value) {
-      console.log(value);
+      this.$router.push({
+        path: `/search?search=` + value
+      })
     },
   },
 }

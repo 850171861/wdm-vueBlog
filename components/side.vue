@@ -1,9 +1,32 @@
 <template>
   <aside class="sidebar">
+    <!-- 关于个人 -->
+    <section class="m-top">
+      <a-card title="关于"
+              :bordered="false"
+              :hoverable="true">
+        <div class="
+author">
+          <div class="pic"><img src="../assets/images/pic.jpg"
+                 alt="头像"></div>
+          <div class="name">吴东明</div>
+          <div class="content">滑稽的人就做滑稽的事</div>
+          <div class="concat">
+            <ul>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+            </ul>
+          </div>
+        </div>
+      </a-card>
+    </section>
     <!--热门文章-->
     <section class="m-top">
-      <a-card title="Card title"
-              :bordered="false">
+      <a-card title="热门文章"
+              :bordered="false"
+              :hoverable="true">
         <p>Card content</p>
         <p>Card content</p>
         <p>Card content</p>
@@ -11,8 +34,9 @@
     </section>
     <!--分类-->
     <section class="m-top">
-      <a-card title="Card title"
-              :bordered="false">
+      <a-card title="分类"
+              :bordered="false"
+              :hoverable="true">
         <p>Card content</p>
         <p>Card content</p>
         <p>Card content</p>
@@ -20,9 +44,9 @@
     </section>
     <!--标签-->
     <section class="m-top">
-
-      <a-card title="Card Title"
-              :bordered="false">
+      <a-card title="标签"
+              :bordered="false"
+              :hoverable="true">
         <div class="box">
           <a-card-grid>
             Content
@@ -90,6 +114,28 @@ export default {
   .m-top {
     margin-top: 15px;
     width: 320px;
+    .author {
+      text-align: center;
+      .pic {
+        img {
+          width: 100px;
+          height: 100px;
+          border-radius: 20px;
+          margin: auto;
+        }
+      }
+      .name {
+        font-size: 22px;
+      }
+      .content {
+        font-size: 16px;
+      }
+    }
+    .ant-card-head-title::before {
+      content: url(http://localhost:3000/favicon1.png);
+      width: 5px;
+      height: 5px;
+    }
   }
   .box {
     display: flex;
