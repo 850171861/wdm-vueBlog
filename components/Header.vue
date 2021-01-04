@@ -1,37 +1,34 @@
 <template>
   <header class="header">
     <div class="nav">
-      <h2 class="logo"><a href="/"> DMblog</a></h2>
+      <h2 class="logo"><a href="/">DMblog</a></h2>
       <ul class="nav-box">
-        <nuxt-link to="/"
-                   tag="li">代码</nuxt-link>
-        <nuxt-link to="/"
-                   tag="li">仓库</nuxt-link>
-        <nuxt-link to="/archive"
-                   tag="li">归档</nuxt-link>
-        <nuxt-link to="/about"
-                   tag="li">关于我</nuxt-link>
+        <nuxt-link to="/" tag="li">代码</nuxt-link>
+        <nuxt-link to="/warehouse" tag="li">仓库</nuxt-link>
+        <nuxt-link to="/archive" tag="li">归档</nuxt-link>
+        <nuxt-link to="/about" tag="li">关于我</nuxt-link>
       </ul>
-      <a-input-search placeholder="input search text"
-                      style="width: 200px"
-                      @search="onSearch" />
+      <a-input-search
+        placeholder="input search text"
+        style="width: 200px"
+        @search="onSearch"
+      />
     </div>
   </header>
 </template>
 
 <script>
-
 export default {
   name: 'Header',
-  data () {
+  data() {
     return {
-      user: true
+      user: true,
     }
   },
   methods: {
-    onSearch (value) {
+    onSearch(value) {
       this.$router.push({
-        path: `/search?search=` + value
+        path: `/search?search=` + value,
       })
     },
   },
@@ -51,9 +48,6 @@ export default {
     display: flex;
     align-items: center;
     height: 60px;
-    .logo {
-      padding-left: 20px;
-    }
     .nav-box {
       display: flex;
       li {
@@ -64,6 +58,9 @@ export default {
         color: #666;
       }
     }
+  }
+  input {
+    margin-left: 20px;
   }
 }
 </style>
