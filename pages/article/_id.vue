@@ -12,6 +12,7 @@
         </div>
       </div>
 
+      <comment />
     </div>
     <div v-else>
       <a-empty description="咦，你要找的东西好像不见了" />
@@ -22,11 +23,14 @@
 
 <script>
 
+import comment from '../../components/Comment'
+
 export default {
-  name: 'article',
+  name: 'Article',
+  components: { comment },
   data () {
     return {
-      articleDetail: { artTitle: false },
+      articleDetail: { artTitle: true },
       msg: "<h1>内容</h1>"
     }
   }
