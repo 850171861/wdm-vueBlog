@@ -12,7 +12,6 @@
               alt="头像"
             />
           </div>
-
           <div class="name">姓名</div>
           <div class="content">描述</div>
           <div class="concat">

@@ -4,9 +4,7 @@
     <side class="main-aside"></side>
     <div id="components-back-top-demo-custom">
       <a-back-top>
-        <div class="ant-back-top-inner">
-          UP
-        </div>
+        <div class="ant-back-top-inner">UP</div>
       </a-back-top>
       <strong style="color: #1088e9"> </strong>
     </div>
@@ -18,23 +16,17 @@ import side from '@/components/Side'
 export default {
   name: 'Main',
   components: { side },
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   },
-  methods: {
-
-  },
-  mounted () {
-
-  }
+  methods: {},
+  mounted() {},
 }
 </script>
 
 <style lang="scss">
 .main {
-  margin: 0 auto;
+  margin: 60px auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
