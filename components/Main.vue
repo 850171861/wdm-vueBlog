@@ -39,6 +39,17 @@ export default {
     padding: 15px;
     border-radius: 6px;
   }
+  .main-aside {
+    width: 320px;
+  }
+  @media screen and (max-width: 1200px) {
+    .main-article {
+      width: 100%;
+    }
+    .main-aside {
+      width: 100%;
+    }
+  }
   // 回到顶部
   #components-back-top-demo-custom .ant-back-top {
     bottom: 100px;

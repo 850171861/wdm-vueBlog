@@ -1,12 +1,11 @@
 <template>
   <div class="about">
     <div class="about-me">
-      <el-divider>关于我</el-divider>
+      <p>关于我</p>
     </div>
     <div class="clearfix about-me-detail">
       <div class="about-me-left">
-        <img src="../assets/images/pic.jpg"
-             alt="重庆崽儿Brand">
+        <img src="../assets/images/pic.jpg" alt="重庆崽儿Brand" />
         <h5>吴东明</h5>
       </div>
       <ul class="about-me-right">
@@ -18,7 +17,7 @@
       </ul>
     </div>
     <div class="about-site">
-      <el-divider>关于本站</el-divider>
+      <p>关于本站</p>
     </div>
     <div class="site-box">
       <div class="site-descript">
@@ -27,14 +26,11 @@
         <div>
           博客界面有些丑，但是暂时不打算改了，如果你有一些简约看着又不错的博客界面，可以给我留言或者邮件，我参考参考。
         </div>
-        <div style="text-align: center;">
-          <img src="../assets/images/Hi-brand-dongtu.gif"
-               alt="hi-brand">
+        <div style="text-align: center">
+          <img src="../assets/images/Hi-brand-dongtu.gif" alt="hi-brand" />
         </div>
       </div>
-      <div>
-        本站所用技术栈：
-      </div>
+      <div>本站所用技术栈：</div>
       <div class="site-tech">
         <div>前端：Nuxt.js+Ant Design Vue</div>
         <div>后端：Vue.js+Ant Design Vue</div>
@@ -49,27 +45,21 @@
 <script>
 export default {
   name: 'about',
-  head () {
+  head() {
     return {
       title: '关于',
     }
   },
   computed: {
-    linkList () {
+    linkList() {
       return this.$store.state.link.list
-    }
+    },
   },
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   },
-  methods: {
-
-  },
-  mounted () {
-
-  }
+  methods: {},
+  mounted() {},
 }
 </script>
 

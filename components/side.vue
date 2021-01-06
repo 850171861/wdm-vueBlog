@@ -100,7 +100,7 @@ export default {
 .sidebar {
   .m-top {
     margin-top: 15px;
-    width: 320px;
+    width: 100%;
     position: relative;
     .author {
       text-align: center;

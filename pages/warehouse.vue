@@ -1,6 +1,6 @@
 <template>
   <div class="warehouse">
-    <a-card hoverable style="width: 270px">
+    <a-card hoverable>
       <img
         slot="cover"
         alt="example"
@@ -11,7 +11,7 @@
       </a-card-meta>
     </a-card>
 
-    <a-card hoverable style="width: 270px">
+    <a-card hoverable>
       <img
         slot="cover"
         alt="example"
@@ -22,7 +22,7 @@
       </a-card-meta>
     </a-card>
 
-    <a-card hoverable style="width: 270px">
+    <a-card hoverable>
       <img
         slot="cover"
         alt="example"
@@ -33,7 +33,7 @@
       </a-card-meta>
     </a-card>
 
-    <a-card hoverable style="width: 270px">
+    <a-card hoverable>
       <img
         slot="cover"
         alt="example"
@@ -58,6 +58,11 @@ export default {
     margin-bottom: 8px;
     margin-right: 5px;
     float: left;
+  }
+  @media screen and (max-width: 590px) {
+    .ant-card {
+      width: 100%;
+    }
   }
 }
 </style>

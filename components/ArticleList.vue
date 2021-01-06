@@ -20,7 +20,7 @@
         :src="item.avatar"
       />
       <a-list-item-meta :description="item.description">
-        <a slot="title" :href="item.href">{{ item.title }}</a>
+        <nuxt-link to="article/1" slot="title" :href="item.href">{{ item.title }}</nuxt-link to="/artilce/1">
       </a-list-item-meta>
     </a-list-item>
   </a-list>
@@ -77,7 +77,7 @@ export default {
         pageSize: 10,
       },
       actions: [
-        { type: '', text: '2020-2-2' },
+        { type: ' ', text: '2020-2-2' },
         { type: 'eye', text: '156' },
         { type: 'message', text: '2' },
         { type: 'bars', text: '2' },
@@ -96,6 +96,9 @@ export default {
   }
   .ant-list-item-meta {
     margin-bottom: 32px;
+    a {
+      font-size: 18px;
+    }
   }
   .ant-list-item-action {
     position: absolute;
