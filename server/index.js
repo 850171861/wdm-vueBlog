@@ -4,6 +4,7 @@ import consola from 'consola'
 
 // Import and Set Nuxt.js options
 import config from '../nuxt.config.js'
+
 const {
   Nuxt,
   Builder
@@ -14,7 +15,7 @@ app.use(router())
 
 config.dev = app.env !== 'production'
 
-async function start() {
+async function start () {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 
@@ -29,8 +30,6 @@ async function start() {
     const builder = new Builder(nuxt)
     await builder.build()
   }
-
-
 
   app.use((ctx) => {
     ctx.status = 200
