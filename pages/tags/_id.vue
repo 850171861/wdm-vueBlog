@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <section class="tags-header">
-      <p class="title">与<span>某标签</span>相关的文章</p>
+      <p class="title">与<span>{{$route.params.id}}</span>相关的文章</p>
       <p class="total">共有<span>1</span>篇</p>
     </section>
     <list></list>
@@ -15,7 +15,7 @@ export default {
   components: {
     list: list,
   },
-  data() {
+  data () {
     return {}
   },
 }

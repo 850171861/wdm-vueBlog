@@ -1,8 +1,8 @@
 import article from '../model/Article.js'
 class ArticleController {
-  async getArticleList (ctx) {
+  async getArticleList(ctx) {
     for (let i = 0; i < 10; i++) {
-      let items = ['vue', 'react', 'node', 'js']
+      let items = ['vue', 'node', 'js']
       var item = items[Math.floor(Math.random() * items.length)]
       const data = await article({
         title: '标题',
