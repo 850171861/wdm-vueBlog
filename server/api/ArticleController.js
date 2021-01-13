@@ -1,23 +1,21 @@
 import article from '../model/Article.js'
-import label from '../model/Label'
 class ArticleController {
   async getArticleList (ctx) {
-    // const data = await article({ title: '123', label: ['vue', 'react'], category: '5ff5851fcd1d45ec94819c12' })
-    // const result = await data.save()
-    const arr = await label.find()
-    const data = []
-    for (const i in arr) {
-      const result = await article.find().count({ label: { $elemMatch: { $eq: arr[i].name } } })
-      const obj = {}
-      obj[arr[i].name] = result
-      data.push(obj)
+    for (let i = 0; i < 10; i++) {
+      let items = ['vue', 'react', 'node', 'js']
+      var item = items[Math.floor(Math.random() * items.length)]
+      const data = await article({
+        title: '标题',
+        content: '内容内容内容',
+        tag: [item, 'react'],
+        cid: '5ffe5a36c8abac1fd8616e12'
+      })
+      const result = await data.save()
     }
 
-    const a = await article.find()
-    console.log(a)
     ctx.body = {
       code: 200,
-      data: data
+      data: 1
     }
   }
 }

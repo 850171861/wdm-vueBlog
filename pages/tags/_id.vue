@@ -1,7 +1,7 @@
 <template>
-  <div class="category">
-    <section class="category-header">
-      <p class="title">归类在<span>生活杂记</span>下的文章</p>
+  <div class="tags">
+    <section class="tags-header">
+      <p class="title">与<span>某标签</span>相关的文章</p>
       <p class="total">共有<span>1</span>篇</p>
     </section>
     <list></list>
@@ -11,7 +11,7 @@
 <script>
 import list from '@/components/ArticleList.vue'
 export default {
-  name: 'category',
+  name: 'tags',
   components: {
     list: list,
   },
@@ -22,11 +22,10 @@ export default {
 </script>
 
 <style lang="scss" scope>
-.category {
+.tags {
   display: flex;
   flex-direction: column;
-  border-bottom: 10px solid #f6f6f6;
-  .category-header {
+  .tags-header {
     background-color: #fff;
     padding: 15px;
     margin-bottom: 15px;

@@ -5,13 +5,12 @@
 </template>
 
 <script>
-
 import list from '@/components/ArticleList.vue'
 export default {
   name: 'index',
   components: {
-    'list': list
-  }
+    list: list,
+  },
 }
 </script>
 

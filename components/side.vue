@@ -1,30 +1,6 @@
 <template>
   <aside class="sidebar">
-    <!-- 关于个人 -->
-    <section class="m-top">
-      <a-card title="关于" :bordered="false" :hoverable="true">
-        <i class="icon"><img src="../static/img/my.png" alt="标签" /></i>
-
-        <div class="author">
-          <div class="pic">
-            <img
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              alt="头像"
-            />
-          </div>
-          <div class="name">姓名</div>
-          <div class="content">描述</div>
-          <div class="concat">
-            <ul>
-              <li><img src="../static/img/QQ.png" alt="qq" /></li>
-              <li><img src="../static/img/wx.png" alt="微信" /></li>
-              <li><img src="../static/img/github.png" alt="github" /></li>
-              <li><img src="../static/img/email.png" alt="邮箱" /></li>
-            </ul>
-          </div>
-        </div>
-      </a-card>
-    </section>
+    <about></about>
     <!--热门文章-->
     <section class="m-top">
       <a-card title="热门文章" :bordered="false" :hoverable="true">
@@ -81,8 +57,12 @@
 </template>
 
 <script>
+import about from '@/components/sidebar/About'
 export default {
   name: 'sidebar',
+  components: {
+    about,
+  },
   data() {
     return {
       categoryList: [{ categoryname: 1, total: 1 }],

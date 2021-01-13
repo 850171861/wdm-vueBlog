@@ -1,21 +1,26 @@
 <template>
   <div class="search">
     <section class="artList-by-type">
-      <p class="type-title">搜索<span>{{$route.query.search}}</span>相关的文章</p>
-      <p class="type-total">共找到<span>{{1 || 0}}</span>篇</p>
+      <p class="type-title">
+        搜索<span>{{ $route.query.search }}</span
+        >相关的文章
+      </p>
+      <p class="type-total">
+        共找到<span>{{ 1 || 0 }}</span
+        >篇
+      </p>
     </section>
     <list></list>
   </div>
 </template>
 
 <script>
-
 import list from '@/components/ArticleList.vue'
 export default {
   name: 'search',
   components: {
-    'list': list
-  }
+    list: list,
+  },
 }
 </script>
 
@@ -29,6 +34,7 @@ export default {
     margin-bottom: 15px;
     text-align: center;
     font-size: 16px;
+    border-bottom: 10px solid #f6f6f6;
     .type-title {
       padding-bottom: 10px;
       span {

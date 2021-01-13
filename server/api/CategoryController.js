@@ -1,8 +1,8 @@
 import category from '../model/Category.js'
 
 class CategoryController {
-  async getCategoryList (ctx) {
-    const data = await category({ name: '222', content: '内容' })
+  async getCategoryList(ctx) {
+    const data = await category({ name: 'react' })
     const result = await data.save()
     ctx.body = {
       code: 200,
