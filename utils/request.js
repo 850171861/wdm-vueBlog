@@ -59,7 +59,8 @@ request.get = function (url, data) {
   return new Promise(function (resolve, reject) {
     request({
       url: url,
-      method: 'GET'
+      method: 'GET',
+      params: data
     })
       .then(res => resolve(res))
       .catch(err => reject(err))

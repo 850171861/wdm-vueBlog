@@ -88,8 +88,8 @@
       </a-button>
     </a-form>
 
-    <div class="comment-list" v-if="commentsData.length !== 0">
-      <a-comment v-for="(item, index) in commentsData" :key="index">
+    <div class="comment-list" v-if="commentList.length !== 0">
+      <a-comment v-for="(item, index) in commentList" :key="index">
         <span slot="actions" key="comment-nested-reply-to" @click="reply(item)"
           >回复</span
         >
@@ -108,6 +108,10 @@
           </p>
         </a-comment>
       </a-comment>
+      <div class="loading-more">
+        <a-spin v-if="loadingMore" />
+        <a-button v-else @click="onLoadMore"> 查看更多评论 </a-button>
+      </div>
     </div>
     <div class="comment-null" v-else>
       <a-empty description="暂无评论，快来抢个沙发吧" />
@@ -120,52 +124,36 @@
 import { scrollToElem } from '../utils/common'
 export default {
   name: 'comment',
-
+  computed: {
+    commentList() {
+      return this.$store.state.comment.commentList
+    },
+  },
   data() {
     return {
       content: '',
-      commentsData: [
-        {
-          id: 2,
-          pic:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-          time: '2020-5-5',
-          content: '我是一级评论',
-          name: '我是一级评论111111',
-        },
-        {
-          id: 1,
-          pic:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-          time: '2020-5-5',
-          content: '我是一级评论',
-          name: '我是一级评论222222',
-          children: [
-            {
-              id: 1,
-              pic:
-                'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-              time: '2020-5-5',
-              content: '我是二级评论444444444444',
-              name: '我是一级评论',
-            },
-            {
-              id: 1,
-              pic:
-                'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-              time: '2020-5-5',
-              content: '我是二级评论5555555555555',
-              name: '我是一级评论',
-            },
-          ],
-        },
-      ],
+      loading: true,
+      loadingMore: false,
       formLayout: 'horizontal',
       formItemLayout: 'formItemLayout',
       form: this.$form.createForm(this, { name: 'coordinated' }),
     }
   },
+  mounted() {
+    console.log(2)
+
+    this.$store.dispatch('comment/setA', { id: 1 })
+  },
   methods: {
+    onLoadMore() {
+      this.loadingMore = true
+      setTimeout(() => {
+        this.loadingMore = false
+        this.$nextTick(() => {
+          window.dispatchEvent(new Event('resize'))
+        })
+      }, 1000)
+    },
     reply(index) {
       // 插入@ + name 到 content
       // 滚动页面到输入框
@@ -185,7 +173,7 @@ export default {
     },
     handleSelectChange(value) {
       this.form.setFieldsValue({
-        note: `@${value.name}   `,
+        note: `//@${value.name}   `,
       })
     },
   },
@@ -212,6 +200,14 @@ export default {
   }
   .ant-input:placeholder-shown {
     background: #f6f8fa;
+  }
+  .loading-more {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    .ant-btn {
+      height: 24.5px;
+    }
   }
 }
 </style>

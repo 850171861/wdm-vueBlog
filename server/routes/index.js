@@ -4,10 +4,12 @@ import combineRoutes from 'koa-combine-routers'
 import articleRouter from './modules/articleRouter'
 import categoryRouter from './modules/categoryRouter'
 import labelRouter from './modules/tagRouter'
+import commentRouter from './modules/commentRouter'
 
 // 使用combineRoutes组合多个路由的实例
 export default combineRoutes(
   articleRouter,
   categoryRouter,
-  labelRouter
+  labelRouter,
+  commentRouter
 )

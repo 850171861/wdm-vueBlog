@@ -21,6 +21,7 @@
     "cross-env": "^5.2.1",
     "install": "^0.13.0",
     "koa": "^2.6.2",
+    "koa-body": "^4.2.0",
     "koa-combine-routers": "^4.0.2",
     "mavon-editor": "^2.9.1",
     "mongoose": "^5.11.10",

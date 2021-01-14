@@ -1,8 +1,13 @@
-export const state = () => ({
+const state = () => ({
   tagList: []
 })
-export const mutations = {
-  setTagList(state, value) {
+const mutations = {
+  setTagList (state, value) {
     state.tagList = value.tagList
   }
+}
+
+export default {
+  state,
+  mutations
 }

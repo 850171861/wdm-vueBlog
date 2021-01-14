@@ -1,7 +1,10 @@
 <template>
   <div class="category">
     <section class="category-header">
-      <p class="title">归类在<span>生活杂记</span>下的文章</p>
+      <p class="title">
+        归类在<span>{{ $route.params.id }}</span
+        >下的文章
+      </p>
       <p class="total">共有<span>1</span>篇</p>
     </section>
     <list></list>

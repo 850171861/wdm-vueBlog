@@ -1,6 +1,8 @@
 import Koa from 'koa'
 import router from './routes'
 import consola from 'consola'
+import koaBody from 'koa-body'
+import path from 'path'
 
 // Import and Set Nuxt.js options
 import config from '../nuxt.config.js'
@@ -12,10 +14,21 @@ const {
 
 const app = new Koa()
 app.use(router())
+app.use(koaBody({
+  multipart: true, // 支持文件上传
+  encoding: 'gzip',
+  formidable: {
+    uploadDir: path.join(__dirname, 'public/upload/'), // 设置文件上传目录
+    keepExtensions: true, // 保持文件的后缀
+    maxFieldsSize: 2 * 1024 * 1024, // 文件上传大小
+    onFileBegin: (name, file) => { // 文件上传前的设置
+    }
+  }
+}))
 
 config.dev = app.env !== 'production'
 
-async function start () {
+async function start() {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 

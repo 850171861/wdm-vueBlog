@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const ArticleSchema = new Schema({
   title: { type: String },
   content: { type: String },
-  cid: { type: Schema.Types.ObjectId, ref: 'category' },
+  cid: { type: Object, ref: 'category' },
   tag: { type: Array },
   reads: { type: Number, default: 0 }, // 计数
   answer: { type: Number, default: 0 } // 评论

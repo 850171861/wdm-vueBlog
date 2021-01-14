@@ -1,18 +1,14 @@
 <template>
   <section class="m-top">
-    <a-card title="热门文章"
-            :bordered="false"
-            :hoverable="true">
-      <i class="icon"><img src="@/static/img/remen.png"
-             alt="热门文章" /></i>
+    <a-card title="热门文章" :bordered="false" :hoverable="true">
+      <i class="icon"><img src="@/static/img/remen.png" alt="热门文章" /></i>
       <div class="hot">
-        <p>
-          <span>1</span>
-          <a href="">Card contentCard contentCard contentCard contentCard contentCard
-            contentCard contentCard content</a>
+        <p v-for="(item, index) in hotArticle" :key="index">
+          <span>{{ index + 1 }}</span>
+          <nuxt-link :to="'/article/' + item._id" tag="a">{{
+            item.title
+          }}</nuxt-link>
         </p>
-        <p><span>1</span> <a href="">Card content</a></p>
-        <p><span>1</span> <a href="">Card content</a></p>
       </div>
     </a-card>
   </section>
@@ -20,7 +16,12 @@
 
 <script>
 export default {
-  name: 'hotArticle'
+  name: 'hotArticle',
+  computed: {
+    hotArticle() {
+      return this.$store.state.article.hotArticle
+    },
+  },
 }
 </script>
 
