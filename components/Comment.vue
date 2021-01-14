@@ -9,26 +9,21 @@
         网址选填，方便看到的人去访问,请完整填写,例如(http://www.wudongming.com)
       </p>
     </div>
-    <a-form
-      :form="form"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 12 }"
-      @submit="handleSubmit"
-    >
+    <a-form :form="form"
+            :label-col="{ span: 6 }"
+            :wrapper-col="{ span: 12 }"
+            @submit="handleSubmit">
       <a-form-item label="内容(必填)">
-        <a-textarea
-          placeholder="说点什么呗"
-          style="height: 100px"
-          v-decorator="[
+        <a-textarea placeholder="说点什么呗"
+                    style="height: 100px"
+                    v-decorator="[
             'note',
             { rules: [{ required: true, message: '说点什么呗' }] },
-          ]"
-        />
+          ]" />
       </a-form-item>
       <a-form-item label="昵称">
-        <a-input
-          placeholder="昵称必填，用于展示在评论中"
-          v-decorator="[
+        <a-input placeholder="昵称必填，用于展示在评论中"
+                 v-decorator="[
             'name',
             {
               rules: [
@@ -38,13 +33,11 @@
                 },
               ],
             },
-          ]"
-        />
+          ]" />
       </a-form-item>
       <a-form-item label="E-mail">
-        <a-input
-          placeholder="邮箱必填，不会公开展示，方便及时收到回复"
-          v-decorator="[
+        <a-input placeholder="邮箱必填，不会公开展示，方便及时收到回复"
+                 v-decorator="[
             'email',
             {
               rules: [
@@ -58,13 +51,11 @@
                 },
               ],
             },
-          ]"
-        />
+          ]" />
       </a-form-item>
       <a-form-item label="网址">
-        <a-input
-          placeholder="网址选填"
-          v-decorator="[
+        <a-input placeholder="网址选填"
+                 v-decorator="[
             'url',
             {
               rules: [
@@ -74,35 +65,40 @@
                 },
               ],
             },
-          ]"
-        />
+          ]" />
       </a-form-item>
 
-      <a-button
-        type="
+      <a-button type="
                  primary"
-        html-type="submit"
-        style="display: block; margin: 0 auto"
-      >
+                html-type="submit"
+                style="display: block; margin: 0 auto">
         提交
       </a-button>
     </a-form>
 
-    <div class="comment-list" v-if="commentList.length !== 0">
-      <a-comment v-for="(item, index) in commentList" :key="index">
-        <span slot="actions" key="comment-nested-reply-to" @click="reply(item)"
-          >回复</span
-        >
+    <div class="comment-list"
+         v-if="commentList.length !== 0">
+      <a-comment v-for="(item, index) in commentList.data"
+                 :key="index">
+        <span slot="actions"
+              key="comment-nested-reply-to"
+              @click="reply(item)">回复</span>
         <a slot="author">{{ item.name }}</a>
-        <a-avatar slot="avatar" :src="item.pic" alt="Han Solo" />
+        <a-avatar slot="avatar"
+                  :src="item.pic"
+                  alt="Han Solo" />
         <p slot="datetime">{{ item.time }}</p>
         <p slot="content">
           {{ item.content }}
         </p>
-        <a-comment v-for="(list, index) in item.children" :key="index">
-          <span slot="actions" @click="reply(list)">回复</span>
+        <a-comment v-for="(list, index) in item.children"
+                   :key="index">
+          <span slot="actions"
+                @click="reply(list)">回复</span>
           <a slot="author">{{ list.name }}</a>
-          <a-avatar slot="avatar" :src="list.pic" alt="Han Solo" />
+          <a-avatar slot="avatar"
+                    :src="list.pic"
+                    alt="Han Solo" />
           <p slot="content">
             {{ list.content }}
           </p>
@@ -110,10 +106,12 @@
       </a-comment>
       <div class="loading-more">
         <a-spin v-if="loadingMore" />
-        <a-button v-else @click="onLoadMore"> 查看更多评论 </a-button>
+        <a-button v-else
+                  @click="onLoadMore"> {{commentList.message}} </a-button>
       </div>
     </div>
-    <div class="comment-null" v-else>
+    <div class="comment-null"
+         v-else>
       <a-empty description="暂无评论，快来抢个沙发吧" />
     </div>
   </div>
@@ -125,12 +123,21 @@ import { scrollToElem } from '../utils/common'
 export default {
   name: 'comment',
   computed: {
-    commentList() {
+    commentList () {
       return this.$store.state.comment.commentList
     },
   },
-  data() {
+  watch: {
+    commentList: {
+      handler (newvalue, oldvalue) {
+        this.loadingMore = false
+      }
+    }
+  },
+  data () {
     return {
+      page: 1,
+      limit: 5,
       content: '',
       loading: true,
       loadingMore: false,
@@ -139,22 +146,29 @@ export default {
       form: this.$form.createForm(this, { name: 'coordinated' }),
     }
   },
-  mounted() {
-    console.log(2)
-
-    this.$store.dispatch('comment/setA', { id: 1 })
+  mounted () {
+    this.$store.dispatch('comment/setCommentList', {
+      id: "60003eca5ac3b35a74fa6af0", page: this.page, limit: this.limit
+    })
   },
   methods: {
-    onLoadMore() {
+    onLoadMore () {
       this.loadingMore = true
+      console.log(this.page)
       setTimeout(() => {
+        this.$store.dispatch('comment/setCommentList', {
+          id: "60003eca5ac3b35a74fa6af0", page: this.page, limit: this.limit
+        })
         this.loadingMore = false
         this.$nextTick(() => {
           window.dispatchEvent(new Event('resize'))
         })
-      }, 1000)
+      }, 500)
+      this.page++
+
+
     },
-    reply(index) {
+    reply (index) {
       // 插入@ + name 到 content
       // 滚动页面到输入框
       // focus 输入框
@@ -163,7 +177,7 @@ export default {
       scrollToElem('.comment_tips', 500, -65)
       document.getElementById('coordinated_note').focus()
     },
-    handleSubmit(e) {
+    handleSubmit (e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -171,7 +185,7 @@ export default {
         }
       })
     },
-    handleSelectChange(value) {
+    handleSelectChange (value) {
       this.form.setFieldsValue({
         note: `//@${value.name}   `,
       })

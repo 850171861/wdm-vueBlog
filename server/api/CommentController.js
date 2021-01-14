@@ -3,16 +3,28 @@ import comment from '../model/comment'
 class CommentsController {
   // 获取评论
   async getComment(ctx) {
-    const { id } = ctx.query
+    const {
+      id,
+      page,
+      limit
+    } = ctx.query
     console.log(id)
-    const page = 1
-    const result = await comment.find({ tid: id }).skip((page - 1) * parseInt(1)).limit(parseInt(1))
 
+    const result = await comment.find({
+      tid: id
+    }).skip((page - 1) * parseInt(page)).limit(parseInt(limit))
+    let message = ''
+    if (result.length === 0) {
+      message = '没有更多了'
+    } else {
+      message = '查看更多评论'
+    }
 
 
     ctx.body = {
       code: 200,
-      data: result
+      data: result,
+      message: message
     }
   }
 }
@@ -49,13 +61,13 @@ export default new CommentsController()
 // const result = data.save()
 
 
-   // const a = await comment.update({ _id: "5ffffb47837bb013b803f05a" }, {
-    //   '$pull': {
-    //     "children": { id: 2 }
-    //   }
-    // })
+// const a = await comment.update({ _id: "5ffffb47837bb013b803f05a" }, {
+//   '$pull': {
+//     "children": { id: 2 }
+//   }
+// })
 
-    // 添加
-    // const a = await comment.update({ _id: '5ffffb47837bb013b803f05a' }, {
-    //   $push: { children: { id: 2 } }
-    // })
+// 添加
+// const a = await comment.update({ _id: '5ffffb47837bb013b803f05a' }, {
+//   $push: { children: { id: 2 } }
+// })

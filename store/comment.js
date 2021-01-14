@@ -1,16 +1,32 @@
+import {
+  getcomment
+} from '@/api/comment'
+
 const state = () => ({
   commentList: []
 })
 
 const mutations = {
-  setCommentList (state, value) {
+  setCommentList(state, value) {
     state.commentList = value.commentList
   }
 }
 
 const actions = {
-  setA ({ commit, state }) {
-    console.log(state)
+  async setCommentList({
+    commit,
+    state
+  }, id)
+
+  {
+    let arr = []
+    const
+      data = await getcomment(id)
+    let result = arr.concat(data)
+    console.log(result)
+    commit('setCommentList', {
+      commentList: result
+    })
   }
 }
 

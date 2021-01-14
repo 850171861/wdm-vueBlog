@@ -1,29 +1,53 @@
-import { tagList } from '@/api/tag'
-import { categoryList } from '@/api/category'
-import { hotArticle } from '@/api/article'
-import { getcomment } from '@/api/comment'
+import {
+  tagList
+} from '@/api/tag'
+import {
+  categoryList
+} from '@/api/category'
+import {
+  hotArticle
+} from '@/api/article'
+import {
+  getcomment
+} from '@/api/comment'
 export const actions = {
-  async nuxtServerInit ({ commit }, { req }) {
+  async nuxtServerInit({
+    commit
+  }, {
+    req
+  }) {
     { // 获取标签列表
-      const { data } = await tagList()
-      commit('tag/setTagList', { tagList: data })
+      const {
+        data
+      } = await tagList()
+      commit('tag/setTagList', {
+        tagList: data
+      })
     }
     // 获取分类列表
     {
-      const { data } = await categoryList()
-      commit('category/setCategoryList', { categoryList: data })
+      const {
+        data
+      } = await categoryList()
+      commit('category/setCategoryList', {
+        categoryList: data
+      })
     }
 
     //  获热门文章前10篇
     {
-      const { data } = await hotArticle()
-      commit('article/setHotArticle', { hotArticle: data })
+      const {
+        data
+      } = await hotArticle()
+      commit('article/setHotArticle', {
+        hotArticle: data
+      })
     }
 
     // 获取评论列表
-    {
-      const { data } = await getcomment()
-      commit('comment/setCommentList', { commentList: data })
-    }
+    // {
+    //   const { data } = await getcomment()
+    //   commit('comment/setCommentList', { commentList: data })
+    // }
   }
 }
