@@ -8,7 +8,11 @@ const state = () => ({
 
 const mutations = {
   setCommentList(state, value) {
-    state.commentList = value.commentList
+
+    const data = state.commentList.concat(value.commentList)
+
+    console.log(data)
+    state.commentList = data
   }
 }
 
@@ -16,17 +20,10 @@ const actions = {
   async setCommentList({
     commit,
     state
-  }, id)
+  }, id) {
+    const { data } = await getcomment(id)
 
-  {
-    let arr = []
-    const
-      data = await getcomment(id)
-    let result = arr.concat(data)
-    console.log(result)
-    commit('setCommentList', {
-      commentList: result
-    })
+    commit('setCommentList', { commentList: data })
   }
 }
 

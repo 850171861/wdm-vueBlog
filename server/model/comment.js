@@ -7,8 +7,14 @@ const CommentSchema = new Schema({
   content: { type: String },
   pic: { type: String },
   name: { type: String },
-  children: { type: Array }
+  children: { type: Array },
+  created: { type: String }
 
+})
+
+CommentSchema.pre('save', function (next) {
+  this.created = new Date()
+  next()
 })
 
 const CommentModel = mongoose.model('comment', CommentSchema)
