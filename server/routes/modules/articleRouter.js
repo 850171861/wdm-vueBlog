@@ -7,5 +7,8 @@ router.prefix('/api')
 
 router.get('/articlelist', ArticleController.getArticleList)
 router.get('/hotArticle', ArticleController.hotArticle)
+router.get('/getArchive', ArticleController.getArchive)
+
+
 
 export default router

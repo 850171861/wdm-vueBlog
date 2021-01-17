@@ -3,12 +3,29 @@ import mongoose from '../config/dbConfig'
 const Schema = mongoose.Schema
 
 const ArticleSchema = new Schema({
-  title: { type: String },
-  content: { type: String },
-  cid: { type: Object, ref: 'category' },
-  tag: { type: Array },
-  reads: { type: Number, default: 0 }, // 计数
-  answer: { type: Number, default: 0 } // 评论
+  title: {
+    type: String
+  },
+  content: {
+    type: String
+  },
+  category: {
+    type: String
+  },
+  tag: {
+    type: Array
+  },
+  created: {
+    type: Date
+  },
+  reads: {
+    type: Number,
+    default: 0
+  }, // 计数
+  answer: {
+    type: Number,
+    default: 0
+  } // 评论
 })
 
 ArticleSchema.pre('save', function (next) {

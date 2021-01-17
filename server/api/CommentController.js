@@ -1,4 +1,5 @@
 import comment from '../model/comment'
+import article from '../model/Article'
 
 class CommentsController {
   // 获取评论
@@ -9,11 +10,65 @@ class CommentsController {
       limit
     } = ctx.query
 
-    const result = await comment.find({ tid: id }).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({ created: -1 })
+    const result = await comment.find({
+      tid: id
+    }).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({
+      created: -1
+    })
 
     ctx.body = {
       code: 200,
       data: result
+    }
+  }
+  // 增加评论
+  async addComment(ctx) {
+    const {
+      id,
+      tid
+    } = ctx.request.body
+
+    if (id) {
+      const parentData = await comment({
+        content: '2222'
+      })
+      const parentResult = await parentData.save()
+      if (parentResult) {
+        const articleReads = await article.updateOne({
+          _id: '6003da01f20ae72cbcf04bd4',
+
+          $inc: {
+            reads: 1
+          }
+
+        })
+      }
+    } else {
+      const result = await comment.updateOne({
+        id: '6002ed983233404d4c092046'
+      }, {
+        $push: {
+          children: {
+            id: 3
+          }
+        }
+      })
+      if (result.ok === 1) {
+        const articleReads = await article.updateOne({
+          _id: '6003da01f20ae72cbcf04bd4',
+          $set: {
+            $inc: {
+              reads: 1
+            }
+          }
+        })
+      }
+    }
+
+
+    ctx.body = {
+      code: 200,
+      message: '评论成功'
     }
   }
 }

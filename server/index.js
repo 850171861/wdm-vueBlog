@@ -13,18 +13,17 @@ const {
 } = require('nuxt')
 
 const app = new Koa()
-app.use(router())
 app.use(koaBody({
-  multipart: true, // 支持文件上传
-  encoding: 'gzip',
+  multipart: true,
   formidable: {
-    uploadDir: path.join(__dirname, 'public/upload/'), // 设置文件上传目录
-    keepExtensions: true, // 保持文件的后缀
-    maxFieldsSize: 2 * 1024 * 1024, // 文件上传大小
-    onFileBegin: (name, file) => { // 文件上传前的设置
-    }
+    keepExtensions: true,
+    maxFieldsSize: 5 * 1024 * 1024
+  },
+  onError: err => {
+    console.log('koabody TCL: err', err)
   }
 }))
+app.use(router())
 
 config.dev = app.env !== 'production'
 
@@ -34,7 +33,7 @@ async function start() {
 
   const {
     host = process.env.HOST || '127.0.0.1',
-    port = process.env.PORT || 3000
+      port = process.env.PORT || 3000
   } = nuxt.options.server
 
   await nuxt.ready()

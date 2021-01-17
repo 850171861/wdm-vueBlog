@@ -1,14 +1,27 @@
 import mongoose from '../config/dbConfig'
 
+
 const Schema = mongoose.Schema
 
 const CommentSchema = new Schema({
-  tid: { type: String },
-  content: { type: String },
-  pic: { type: String },
-  name: { type: String },
-  children: { type: Array },
-  created: { type: String }
+  tid: {
+    type: String
+  },
+  content: {
+    type: String
+  },
+  pic: {
+    type: String
+  },
+  name: {
+    type: String
+  },
+  children: {
+    type: Array
+  },
+  created: {
+    type: Date
+  }
 
 })
 

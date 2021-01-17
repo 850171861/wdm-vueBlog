@@ -1,54 +1,31 @@
 <template>
   <div class="warehouse">
-    <a-card hoverable>
-      <img
-        slot="cover"
-        alt="example"
-        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <template slot="actions" class="ant-card-actions"> 访问 </template>
-      <a-card-meta title="Card title" description="This is the description">
+    <a-card hoverable
+            v-for="(item,index) in warehouseList"
+            :key="index">
+      <template slot="actions"
+                class="ant-card-actions">
+        <nuxt-link :to="item.url">访问</nuxt-link>
+      </template>
+      <a-card-meta :title="item.title"
+                   :description="item.content">
       </a-card-meta>
     </a-card>
 
-    <a-card hoverable>
-      <img
-        slot="cover"
-        alt="example"
-        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <template slot="actions" class="ant-card-actions"> 访问 </template>
-      <a-card-meta title="Card title" description="This is the description">
-      </a-card-meta>
-    </a-card>
-
-    <a-card hoverable>
-      <img
-        slot="cover"
-        alt="example"
-        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <template slot="actions" class="ant-card-actions"> 访问 </template>
-      <a-card-meta title="Card title" description="This is the description">
-      </a-card-meta>
-    </a-card>
-
-    <a-card hoverable>
-      <img
-        slot="cover"
-        alt="example"
-        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <template slot="actions" class="ant-card-actions"> 访问 </template>
-      <a-card-meta title="Card title" description="This is the description">
-      </a-card-meta>
-    </a-card>
   </div>
 </template>
 
 <script>
+import { getWarehouse } from '@/api/warehouse'
 export default {
   name: 'warehouse',
+  async asyncData ({ params, error }) {
+    const { data } = await getWarehouse()
+
+    return {
+      warehouseList: data
+    }
+  }
 }
 </script>
 
@@ -58,6 +35,15 @@ export default {
     margin-bottom: 8px;
     margin-right: 5px;
     float: left;
+    .ant-card-meta-description {
+      width: 357px;
+      height: 79px;
+      word-wrap: break-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+    }
   }
   @media screen and (max-width: 590px) {
     .ant-card {
