@@ -84,6 +84,10 @@ export default {
       ],
     }
   },
+  mounted() {
+    console.log(2)
+    this.$store.dispatch('article/setArticleList')
+  },
 }
 </script>
 <style lang="scss" scope>
