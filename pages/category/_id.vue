@@ -2,10 +2,9 @@
   <div class="category">
     <section class="category-header">
       <p class="title">
-        归类在<span>{{ $route.params.id }}</span
-        >下的文章
+        归类在<span>{{ $route.params.id }}</span>下的文章
       </p>
-      <p class="total">共有<span>1</span>篇</p>
+      <p class="total">共有<span>{{this.$store.state.article.articleList.total}}</span>篇</p>
     </section>
     <list></list>
   </div>
@@ -18,7 +17,7 @@ export default {
   components: {
     list: list,
   },
-  data() {
+  data () {
     return {}
   },
 }

@@ -54,6 +54,8 @@ export default {
   name: 'Header',
   data () {
     return {
+      page: 1,
+      limit: 10,
       ismenu: true,
     }
   },
@@ -62,8 +64,13 @@ export default {
       this.ismenu = !this.ismenu
     },
     onSearch (value) {
+      if (value === '') {
+        this.$message.error('搜索不能为空哦');
+        return
+      }
       this.ismenu = !this.ismenu
-      this.$store.dispatch('article/setArticleList', value)
+      let obj = { page: this.page, limit: this.limit, search: value }
+      this.$store.dispatch('article/setArticleList', obj)
       this.$router.push({
         path: `/search?search=` + value,
       })

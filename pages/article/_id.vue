@@ -2,12 +2,12 @@
   <div class="article_id clearfix">
     <div class="left-content"
          v-if="articleDetail.artTitle">
-      <h2 class="article-title">标题</h2>
-      <p class="article-info"><span>发布于：2020-2-2</span><span>4次浏览</span><span>2 条评论</span>
+      <h2 class="article-title">{{data.title}}</h2>
+      <p class="article-info"><span>发布于：{{data.created | moment}}</span><span>{{data.reads}}次浏览</span><span>{{data.answer}} 条评论</span>
       </p>
       <div class="article-content"
            id="r-md-preview">
-        <div v-html="msg">
+        <div v-html="data.content">
 
         </div>
       </div>
@@ -24,15 +24,28 @@
 <script>
 
 import comment from '../../components/Comment'
+import { getArticleInfo } from '@/api/article'
+import filters from '@/directive/relativeTime'
 
 export default {
   name: 'Article',
   components: { comment },
+  filters: filters,
   data () {
     return {
       articleDetail: { artTitle: true },
       msg: "<h1>内容</h1>"
     }
+  },
+  async asyncData ({ params, error }) {
+
+    const { code, data } = await getArticleInfo(params)
+    if (code === 200) {
+      return {
+        data: data[0]
+      }
+    }
+
   }
 }
 </script>

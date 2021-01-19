@@ -2,12 +2,10 @@
   <div class="search">
     <section class="artList-by-type">
       <p class="type-title">
-        搜索<span>{{ $route.query.search }}</span
-        >相关的文章
+        搜索<span>{{ $route.query.search }}</span>相关的文章
       </p>
       <p class="type-total">
-        共找到<span>{{ 1 || 0 }}</span
-        >篇
+        共找到<span>{{this.$store.state.article.articleList.total}}</span>篇
       </p>
     </section>
     <list></list>

@@ -2,7 +2,7 @@
   <div class="tags">
     <section class="tags-header">
       <p class="title">与<span>{{$route.params.id}}</span>相关的文章</p>
-      <p class="total">共有<span>1</span>篇</p>
+      <p class="total">共有<span>{{this.$store.state.article.articleList.total}}</span>篇</p>
     </section>
     <list></list>
   </div>
