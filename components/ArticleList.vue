@@ -1,7 +1,7 @@
 <template>
-  <a-list item-layout="vertical"
+<div class="articleList">
+    <a-list item-layout="vertical"
           size="large"
-          :pagination="pagination"
           :data-source="articleList">
     <a-list-item slot="renderItem"
                  key="item.title"
@@ -33,12 +33,15 @@
            alt="logo"
            :src="item.url" />
       <a-list-item-meta :description="item.description">
-        <nuxt-link to="article/1"
+        <nuxt-link :to="'/artilce/'+ item._id"
                    slot="title"
-                   :href="item.href">{{ item.title }}</nuxt-link to="/artilce/1">
+                   :href="item.href">{{ item.title }}</nuxt-link :to="'/artilce/'+ item._id">
       </a-list-item-meta>
     </a-list-item>
   </a-list>
+  <a-pagination :default-current="page" :total="500" />
+</div>
+  
 </template>
 <script>
 import moment from 'dayjs'
@@ -46,26 +49,20 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 moment.extend(relativeTime)
 export default {
-  data () {
+  name: 'articleList',
+  data() {
     return {
       page: 1,
-      limit: 2,
-      pagination: {
-        onChange: (page) => {
-          console.log(page)
-        },
-        pageSize: 10,
-      },
+      limit: 10,
     }
   },
   computed: {
-    articleList () {
+    articleList() {
       return this.$store.state.article.articleList
-    }
-
+    },
   },
   filters: {
-    moment (date) {
+    moment(date) {
       // 超过7天，显示日期
       if (moment(date).isBefore(moment().subtract(7, 'days'))) {
         return moment(date).format('YYYY-MM-DD')
@@ -73,9 +70,9 @@ export default {
         // 1小前，xx小时前，X天前
         return moment(date).locale('zh-cn').from(moment())
       }
-    }
+    },
   },
-  mounted () {
+  mounted() {
     let obj = { page: this.page, limit: this.limit }
     let route = this.$route
     if (route.name === 'search-id') {
@@ -110,5 +107,12 @@ export default {
     position: absolute;
     bottom: 10px;
   }
+}
+
+// 分页
+.ant-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 </style>

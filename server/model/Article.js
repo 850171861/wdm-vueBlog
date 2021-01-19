@@ -9,6 +9,9 @@ const ArticleSchema = new Schema({
   content: {
     type: String
   },
+  description: {
+    type: String
+  },
   category: {
     type: String
   },
