@@ -1,7 +1,7 @@
 import article from '../model/Article.js'
 class ArticleController {
   // 文章列表
-  async getArticleList (ctx) {
+  async getArticleList(ctx) {
     const {
       tag,
       category,
@@ -29,14 +29,11 @@ class ArticleController {
       }]
     }
 
-    // const data = await article.find(query).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({
-    //   created: -1
-    // })
-    const total = await article.find(query).count()
-
     const data = await article.find(query).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({
       created: -1
     })
+    const total = await article.find(query).count()
+
 
     ctx.body = {
       code: 200,
@@ -46,22 +43,43 @@ class ArticleController {
   }
 
   // 文章内容
-  async getArticleInfo (ctx) {
+  async getArticleInfo(ctx) {
     const {
       id
     } = ctx.query
-    const result = await article.find({
+    const result = await article.findOne({
       _id: id
     })
 
+    // 将字符串切割相隔3个
+    function splitChunks(string) {
+      var regex = RegExp(".{1," + Math.ceil(string.length / (string.length / 3)) + "}", 'g');
+      return string.match(regex);
+    }
+    // 相关文章查询
+    let query = {}
+    let title = result.title
+    let str = splitChunks(title)
+    let strArr = []
+    for (let i = 0; i < str.length; i++) {
+      let title = {
+        title: {
+          $regex: new RegExp(str[i], 'i')
+        }
+      }
+      strArr.push(title)
+    }
+    query.$or = strArr
+    const related = await article.find(query).limit(4)
     ctx.body = {
       code: 200,
-      data: result
+      data: result,
+      related: related
     }
   }
 
   // 热门文章
-  async hotArticle (ctx) {
+  async hotArticle(ctx) {
     const result = await article.find().sort({
       reads: -1
     }).limit(10)
@@ -73,47 +91,47 @@ class ArticleController {
   }
 
   // 获取文章归档数据
-  async getArchive (ctx) {
+  async getArchive(ctx) {
     // 获取总条数
     const total = await article.find().count()
     // 获取归档数据
     const data = await article.aggregate([{
-      $project: {
-        title: '$title',
-        reads: '$reads',
-        createdTime: {
-          $substr: [{
-            $add: ['$created', 28800000]
-          }, 0, 10]
-        },
-        created: {
-          $substr: [{
-            $add: ['$created', 28800000]
-          }, 0, 4]
-        }
-      }
-    },
-    {
-      $group: {
-        _id: '$created',
-        yearList: {
-          $push: {
-            id: '$_id',
-            title: '$title',
-            reads: '$reads',
-            created: '$createdTime'
+        $project: {
+          title: '$title',
+          reads: '$reads',
+          createdTime: {
+            $substr: [{
+              $add: ['$created', 28800000]
+            }, 0, 10]
+          },
+          created: {
+            $substr: [{
+              $add: ['$created', 28800000]
+            }, 0, 4]
           }
-        },
-        count: {
-          $sum: 1
+        }
+      },
+      {
+        $group: {
+          _id: '$created',
+          yearList: {
+            $push: {
+              id: '$_id',
+              title: '$title',
+              reads: '$reads',
+              created: '$createdTime'
+            }
+          },
+          count: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          _id: -1 // 执行完 $group，得到的结果集按照_id排列
         }
       }
-    },
-    {
-      $sort: {
-        _id: -1 // 执行完 $group，得到的结果集按照_id排列
-      }
-    }
     ])
 
     ctx.body = {

@@ -1,17 +1,30 @@
 <template>
   <div class="article_id clearfix">
-    <div class="left-content" v-if="articleDetail.artTitle">
+    <div class="left-content"
+         v-if="articleDetail.artTitle">
       <h2 class="article-title">{{ data.title }}</h2>
       <p class="article-info">
-        <span>发布于：{{ data.created | moment }}</span
-        ><span>{{ data.reads }}次浏览</span
-        ><span>{{ data.answer }} 条评论</span>
+        <span>发布于：{{ data.created | moment }}</span><span>{{ data.reads }}次浏览</span><span>{{ data.answer }} 条评论</span>
       </p>
-      <div class="article-content" id="r-md-preview">
+      <div class="article-content"
+           id="r-md-preview">
         <div v-html="data.content"></div>
       </div>
       <!-- 相关文章 -->
-      <div class="related-articles"></div>
+      <div class="related-articles">
+        <div class="related">相关文章</div>
+        <ul class="ul-related">
+          <li><a href="">222</a></li>
+          <li><a href="">222</a></li>
+        </ul>
+        <ul class="ul-copyright">
+          <li><span>本文作者：</span> var author='wdm'</li>
+          <li><span>本文链接：</span> http://{{$nuxt.$route.path}}</li>
+          <li>
+            <span>版权声明：</span> 本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！
+          </li>
+        </ul>
+      </div>
       <comment />
     </div>
     <div v-else>
@@ -29,17 +42,18 @@ export default {
   name: 'Article',
   components: { comment },
   filters: filters,
-  data() {
+  data () {
     return {
       articleDetail: { artTitle: true },
       msg: '<h1>内容</h1>',
     }
   },
-  async asyncData({ params, error }) {
+
+  async asyncData ({ params, error }) {
     const { code, data } = await getArticleInfo(params)
     if (code === 200) {
       return {
-        data: data[0],
+        data: data,
       }
     }
   },
@@ -47,6 +61,40 @@ export default {
 </script>
 
 <style lang="scss">
+.related-articles {
+  .related {
+    height: 30px;
+    border-bottom: 1px solid #eee;
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 60px;
+  }
+  .ul-related {
+    li {
+      a {
+        display: inline-block;
+        height: 24px;
+        line-height: 24px;
+        font-size: 14px;
+        color: #666;
+        text-decoration: underline;
+      }
+      a:hover {
+        color: #000;
+        padding-left: 10px;
+        transition: all 0.5s;
+      }
+    }
+  }
+  .ul-copyright {
+    background: #f5f5f5;
+    border-left: 3px solid #ff2a2a;
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0.5em 1em;
+  }
+}
 .el-message {
   top: 65px !important;
 }

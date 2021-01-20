@@ -2,80 +2,28 @@
   <div class="comment">
     <div class="comment_tips">
       <p style="font-size: 16px; color: #000; font-weight: bold">提示：</p>
-      <p>评论会在审核通过后显示在下方</p>
       <p>昵称必填，用于展示在评论中</p>
       <p>邮箱必填，不会公开展示，方便及时收到回复</p>
       <p>
         网址选填，方便看到的人去访问,请完整填写,例如(http://www.wudongming.com)
       </p>
     </div>
-    <a-form :form="form"
-            :label-col="{ span: 6 }"
-            :wrapper-col="{ span: 12 }"
-            @submit="handleSubmit">
-      <a-form-item label="内容(必填)">
-        <a-textarea placeholder="说点什么呗"
-                    style="height: 100px"
-                    v-decorator="[
-            'note',
-            { rules: [{ required: true, message: '说点什么呗' }] },
-          ]" />
-      </a-form-item>
-      <a-form-item label="昵称">
-        <a-input placeholder="昵称必填，用于展示在评论中"
-                 v-decorator="[
-            'name',
-            {
-              rules: [
-                {
-                  required: true,
-                  message: '昵称必填，用于展示在评论中',
-                },
-              ],
-            },
-          ]" />
-      </a-form-item>
-      <a-form-item label="E-mail">
-        <a-input placeholder="邮箱必填，不会公开展示，方便及时收到回复"
-                 v-decorator="[
-            'email',
-            {
-              rules: [
-                {
-                  type: 'email',
-                  message: '输入的电子邮件无效!',
-                },
-                {
-                  required: true,
-                  message: '邮箱必填，不会公开展示，方便及时收到回复',
-                },
-              ],
-            },
-          ]" />
-      </a-form-item>
-      <a-form-item label="网址">
-        <a-input placeholder="网址选填"
-                 v-decorator="[
-            'url',
-            {
-              rules: [
-                {
-                  required: false,
-                  message: '',
-                },
-              ],
-            },
-          ]" />
-      </a-form-item>
 
-      <a-button type="
-                 primary"
-                html-type="submit"
-                style="display: block; margin: 0 auto">
-        提交
-      </a-button>
-    </a-form>
+    <!-- 评论表单 -->
+    <div class="wrap">
+      <div class="wrap-input">
+        <input type="text"
+               placeholder="昵称">
+        <input type="text"
+               placeholder="邮箱">
+        <input type="text"
+               placeholder="网站(http://)">
+      </div>
 
+      <a-textarea placeholder="说点什么吧~~"
+                  :auto-size="{ minRows: 5, maxRows: 6 }" />
+      <a-button>提交</a-button>
+    </div>
     <div class="comment-list"
          v-if="commentList.length !== 0">
       <a-comment v-for="(item, index) in commentList"
@@ -142,6 +90,7 @@ export default {
   // },
   data () {
     return {
+      textarea: 'min',
       page: 1,
       limit: 10,
       content: '',
@@ -215,20 +164,61 @@ export default {
       margin-bottom: 0;
     }
   }
-  .comment-null {
-    background: #f6f8fa;
-    margin-top: 20px;
-    padding: 10px 0;
-  }
-  .ant-input:placeholder-shown {
-    background: #f6f8fa;
-  }
+
   .loading-more {
     display: flex;
     justify-content: center;
     margin: 20px 0;
     .ant-btn {
       height: 24.5px;
+    }
+  }
+  .wrap {
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    position: relative;
+    padding: 10px;
+    .wrap-input {
+      display: flex;
+      flex-wrap: wrap;
+      input {
+        width: 33.33%;
+        background: transparent;
+        border: none;
+        resize: none;
+        outline: none;
+        padding: 10px 5px;
+        font-size: 14px;
+        border-bottom: 1px dashed #dedede;
+      }
+      input:focus {
+        border-bottom: 1px dashed #f5bc29;
+      }
+      @media screen and (max-width: 420px) {
+        input {
+          width: 100%;
+        }
+      }
+    }
+    .ant-input {
+      background: transparent;
+    }
+    textarea {
+      width: 100%;
+      font-size: 14px;
+      background: transparent;
+      padding: 10px 5px;
+      border: none;
+    }
+    textarea:focus {
+      box-shadow: none;
+    }
+    .ant-btn {
+      float: right;
+      margin-top: 15px;
+      margin-bottom: 10px;
     }
   }
 }
