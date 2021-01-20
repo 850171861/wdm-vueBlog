@@ -1,28 +1,26 @@
 <template>
   <div class="article_id clearfix">
-    <div class="left-content"
-         v-if="articleDetail.artTitle">
-      <h2 class="article-title">{{data.title}}</h2>
-      <p class="article-info"><span>发布于：{{data.created | moment}}</span><span>{{data.reads}}次浏览</span><span>{{data.answer}} 条评论</span>
+    <div class="left-content" v-if="articleDetail.artTitle">
+      <h2 class="article-title">{{ data.title }}</h2>
+      <p class="article-info">
+        <span>发布于：{{ data.created | moment }}</span
+        ><span>{{ data.reads }}次浏览</span
+        ><span>{{ data.answer }} 条评论</span>
       </p>
-      <div class="article-content"
-           id="r-md-preview">
-        <div v-html="data.content">
-
-        </div>
+      <div class="article-content" id="r-md-preview">
+        <div v-html="data.content"></div>
       </div>
-
+      <!-- 相关文章 -->
+      <div class="related-articles"></div>
       <comment />
     </div>
     <div v-else>
       <a-empty description="咦，你要找的东西好像不见了" />
     </div>
-
   </div>
 </template>
 
 <script>
-
 import comment from '../../components/Comment'
 import { getArticleInfo } from '@/api/article'
 import filters from '@/directive/relativeTime'
@@ -31,22 +29,20 @@ export default {
   name: 'Article',
   components: { comment },
   filters: filters,
-  data () {
+  data() {
     return {
       articleDetail: { artTitle: true },
-      msg: "<h1>内容</h1>"
+      msg: '<h1>内容</h1>',
     }
   },
-  async asyncData ({ params, error }) {
-
+  async asyncData({ params, error }) {
     const { code, data } = await getArticleInfo(params)
     if (code === 200) {
       return {
-        data: data[0]
+        data: data[0],
       }
     }
-
-  }
+  },
 }
 </script>
 
