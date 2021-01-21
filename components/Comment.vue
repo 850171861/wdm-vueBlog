@@ -2,8 +2,8 @@
   <div class="comment">
     <div class="comment_tips">
       <p style="font-size: 16px; color: #000; font-weight: bold">提示：</p>
-      <p>昵称必填，用于展示在评论中</p>
-      <p>邮箱必填，不会公开展示，方便及时收到回复</p>
+      <p>昵称选填，用于展示在评论中</p>
+      <p>邮箱选填，不会公开展示，方便及时收到回复</p>
       <p>
         网址选填，方便看到的人去访问,请完整填写,例如(http://www.wudongming.com)
       </p>
@@ -12,41 +12,39 @@
     <!-- 评论表单 -->
     <div class="wrap">
       <div class="wrap-input">
-        <input type="text"
-               placeholder="昵称">
-        <input type="text"
-               placeholder="邮箱">
-        <input type="text"
-               placeholder="网站(http://)">
+        <input type="text" placeholder="昵称" v-model="name" />
+        <input type="text" placeholder="邮箱" v-model="email" />
+        <input type="text" placeholder="网址(http://)" v-model="url" />
       </div>
 
-      <a-textarea placeholder="说点什么吧~~"
-                  :auto-size="{ minRows: 5, maxRows: 6 }" />
-      <a-button>提交</a-button>
+      <a-textarea
+        placeholder="说点什么吧~~"
+        :auto-size="{ minRows: 5, maxRows: 12 }"
+        class="comment-textarea"
+        id="comment-textarea"
+        v-model="textareaValue"
+      />
+      <p>正在回复：1111</p>
+      <a-button @click="submit">提交</a-button>
     </div>
-    <div class="comment-list"
-         v-if="commentList.length !== 0">
-      <a-comment v-for="(item, index) in commentList"
-                 :key="index">
-        <span slot="actions"
-              key="comment-nested-reply-to"
-              @click="reply(item)">回复</span>
+    <div class="comment-list" v-if="commentList.length !== 0">
+      <a-comment v-for="(item, index) in commentList" :key="index">
+        <span slot="actions" key="comment-nested-reply-to" @click="reply(item)"
+          >回复</span
+        >
         <a slot="author">{{ item.name }}</a>
-        <a-avatar slot="avatar"
-                  :src="item.pic"
-                  alt="Han Solo" />
-        <p slot="datetime">{{ item.time | moment }}</p>
+        <a-avatar slot="avatar" :src="item.pic" alt="Han Solo" />
+        <p slot="datetime">({{ item.created | moment }})</p>
         <p slot="content">
           {{ item.content }}
         </p>
-        <a-comment v-for="(list, index) in item.children"
-                   :key="index">
-          <span slot="actions"
-                @click="reply(list)">回复</span>
-          <a slot="author">{{ list.name }}</a>
-          <a-avatar slot="avatar"
-                    :src="list.pic"
-                    alt="Han Solo" />
+        <a-comment v-for="(list, index) in item.children" :key="index">
+          <span slot="actions" @click="reply(item)">回复</span>
+          <a slot="author"
+            >{{ list.name }}
+            <span style="color: #ccc">({{ list.time | moment }})</span></a
+          >
+          <a-avatar slot="avatar" :src="list.pic" alt="Han Solo" />
           <p slot="content">
             {{ list.content }}
           </p>
@@ -54,14 +52,12 @@
       </a-comment>
       <div class="loading-more">
         <a-spin v-if="loadingMore" />
-        <a-button v-else
-                  @click="onLoadMore">
+        <a-button v-else @click="onLoadMore">
           {{ this.$store.state.comment.more }}
         </a-button>
       </div>
     </div>
-    <div class="comment-null"
-         v-else>
+    <div class="comment-null" v-else>
       <a-empty description="暂无评论，快来抢个沙发吧" />
     </div>
   </div>
@@ -71,50 +67,42 @@
 <script>
 import { scrollToElem } from '../utils/common'
 import filters from '@/directive/relativeTime'
-
+import { addComment } from '@/api/comment'
 export default {
   name: 'comment',
   computed: {
-    commentList () {
+    commentList() {
       return this.$store.state.comment.commentList
     },
   },
   filters: filters,
-  // watch: {
-  //   commentList: {
-  //     handler(newvalue, oldvalue) {
-  //       console.log(newvalue)
-  //       console.log(oldvalue)
-  //     },
-  //   },
-  // },
-  data () {
+  data() {
     return {
-      textarea: 'min',
       page: 1,
       limit: 10,
-      content: '',
+      name: '',
+      email: '',
+      url: '',
+      textareaValue: '',
+      reviewers: '', // 评论者
       loading: true,
       loadingMore: false,
-      formLayout: 'horizontal',
-      formItemLayout: 'formItemLayout',
-      form: this.$form.createForm(this, { name: 'coordinated' }),
     }
   },
-  mounted () {
+  mounted() {
     this.$store.dispatch('comment/setCommentList', {
-      id: '6003da01f20ae72cbcf04bdf',
+      id: '5fffb4957484362910b39ef0',
       page: this.page,
       limit: this.limit,
     })
   },
   methods: {
-    onLoadMore () {
+    onLoadMore() {
       this.loadingMore = true
       console.log(this.page)
       setTimeout(() => {
         this.$store.dispatch('comment/setCommentList', {
-          id: '6002ed983233404d4c092040',
+          id: '5fffb4957484362910b39ef7',
           page: this.page,
           limit: this.limit,
         })
@@ -125,27 +113,46 @@ export default {
       }, 500)
       this.page += 1
     },
-    reply (index) {
-      // 插入@ + name 到 content
-      // 滚动页面到输入框
-      // focus 输入框
-      this.handleSelectChange(index)
+    reply(index) {
+      this.reviewers = index
+      // 插入@ + name 到 textareaValue
+      this.textareaValue = '//@' + index.name + '   '
       // 动态滚动到输入框的位置，并且进行focus
-      scrollToElem('.comment_tips', 500, -65)
-      document.getElementById('coordinated_note').focus()
+      scrollToElem('.comment-textarea', 500, -240)
+      // focus 输入框
+      document.getElementById('comment-textarea').focus()
     },
-    handleSubmit (e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-        }
-      })
-    },
-    handleSelectChange (value) {
-      this.form.setFieldsValue({
-        note: `//@${value.name}   `,
-      })
+    submit() {
+      if (this.textareaValue === '') {
+        this.$message.error('提交失败，内容不能为空')
+        return
+      }
+      let picArr = [
+        '/picImg/pic1.png',
+        '/picImg/pic2.png',
+        '/picImg/pic3.png',
+        '/picImg/pic4.png',
+        '/picImg/pic5.png',
+        '/picImg/pic6.png',
+        '/picImg/pic7.png',
+        '/picImg/pic8.png',
+      ]
+      let pic = picArr[Math.floor(Math.random() * picArr.length)]
+      let tid = this.$route.params.id
+      let name = this.name || 'anonymity'
+      let email = this.email || ''
+      let textareaValue = this.textareaValue
+      let id = this.reviewers.id || ''
+      console.log(textareaValue)
+      let data = {
+        pic: pic,
+        tid: tid,
+        name: name,
+        email: email,
+        textareaValue: textareaValue,
+        id: id,
+      }
+      addComment(data)
     },
   },
 }

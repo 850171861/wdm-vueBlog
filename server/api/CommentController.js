@@ -3,7 +3,7 @@ import article from '../model/Article'
 
 class CommentsController {
   // 获取评论
-  async getComment(ctx) {
+  async getComment (ctx) {
     const {
       id,
       page,
@@ -21,50 +21,39 @@ class CommentsController {
       data: result
     }
   }
+
   // 增加评论
-  async addComment(ctx) {
-    const {
-      id,
-      tid
-    } = ctx.request.body
+  async addComment (ctx) {
+    const a = ctx.request.body
 
-    if (id) {
-      const parentData = await comment({
-        content: '2222'
-      })
-      const parentResult = await parentData.save()
-      if (parentResult) {
-        const articleReads = await article.updateOne({
-          _id: '6003da01f20ae72cbcf04bd4',
+    console.log(a)
 
-          $inc: {
-            reads: 1
-          }
+    // if (id) {
+    //   const parentData = await comment({
+    //     content: '2222'
+    //   })
+    //   const parentResult = await parentData.save()
 
-        })
-      }
-    } else {
-      const result = await comment.updateOne({
-        id: '6002ed983233404d4c092046'
-      }, {
-        $push: {
-          children: {
-            id: 3
-          }
-        }
-      })
-      if (result.ok === 1) {
-        const articleReads = await article.updateOne({
-          _id: '6003da01f20ae72cbcf04bd4',
-          $set: {
-            $inc: {
-              reads: 1
-            }
-          }
-        })
-      }
-    }
+    //   if (parentResult) {
+    //     const articleReads = await article.updateOne({ _id: tid, $inc: { reads: 1 } })
+    //   }
 
+    // } else {
+    //   const result = await comment.updateOne({
+    //     id: tid
+    //   }, {
+    //     $push: {
+    //       children: {
+    //         id: 3
+    //       }
+    //     }
+    //   })
+    //   if (result.ok === 1) {
+    //     const articleReads = await article.updateOne({id: tid, $set: {$inc: {reads: 1}
+    //       }
+    //     })
+    //   }
+    // }
 
     ctx.body = {
       code: 200,
