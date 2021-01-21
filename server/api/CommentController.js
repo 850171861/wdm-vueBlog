@@ -1,9 +1,9 @@
 import comment from '../model/comment'
 import article from '../model/Article'
-
+// import uuid from 'node-uuid';
 class CommentsController {
   // 获取评论
-  async getComment (ctx) {
+  async getComment(ctx) {
     const {
       id,
       page,
@@ -16,6 +16,8 @@ class CommentsController {
       created: -1
     })
 
+
+
     ctx.body = {
       code: 200,
       data: result
@@ -23,37 +25,64 @@ class CommentsController {
   }
 
   // 增加评论
-  async addComment (ctx) {
-    const a = ctx.request.body
+  async addComment(ctx) {
+    const {
+      id,
+      pic,
+      tid,
+      name,
+      email,
+      url,
+      textareaValue
+    } = ctx.request.body
+    // 有id代表发送过来的是二级评论，直接插入children数组
+    if (id) {
+      const childrenResult = await comment.updateOne({
+        _id: id
+      }, {
+        $push: {
+          children: {
+            $each: [{
+              pic: pic,
+              name: name,
+              email: email,
+              url: url,
+              content: textareaValue,
+              time: new Date()
+            }],
+            $position: 0
+          }
+        }
+      })
 
-    console.log(a)
+      if (childrenResult.ok === 1) {
+        const articleAnswer = await article.updateOne({
+          _id: tid
+        }, {
+          $inc: {
+            answer: 1
+          }
+        })
+      }
 
-    // if (id) {
-    //   const parentData = await comment({
-    //     content: '2222'
-    //   })
-    //   const parentResult = await parentData.save()
-
-    //   if (parentResult) {
-    //     const articleReads = await article.updateOne({ _id: tid, $inc: { reads: 1 } })
-    //   }
-
-    // } else {
-    //   const result = await comment.updateOne({
-    //     id: tid
-    //   }, {
-    //     $push: {
-    //       children: {
-    //         id: 3
-    //       }
-    //     }
-    //   })
-    //   if (result.ok === 1) {
-    //     const articleReads = await article.updateOne({id: tid, $set: {$inc: {reads: 1}
-    //       }
-    //     })
-    //   }
-    // }
+    } else {
+      const data = await comment({
+        tid: tid,
+        pic: pic,
+        name: name,
+        content: textareaValue
+      })
+      const result = await data.save()
+      if (result) {
+        const articleAnswer = await article.updateOne({
+          _id: tid
+        }, {
+          $inc: {
+            answer: 1
+          }
+        })
+      }
+    }
 
     ctx.body = {
       code: 200,

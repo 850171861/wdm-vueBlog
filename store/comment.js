@@ -12,9 +12,9 @@ const mutations = {
     if (value.commentList.length === 0) {
       state.more = '没有更多了'
     }
-    const data = state.commentList.concat(value.commentList)
+    // const data = state.commentList.concat(value.commentList)
 
-    state.commentList = data
+    state.commentList = value.commentList
   }
 }
 
@@ -23,10 +23,10 @@ const actions = {
     commit,
     state
   }, id) {
+    console.log(id)
     const {
       data
     } = await getcomment(id)
-
     commit('setCommentList', {
       commentList: data
     })

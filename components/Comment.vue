@@ -12,39 +12,51 @@
     <!-- 评论表单 -->
     <div class="wrap">
       <div class="wrap-input">
-        <input type="text" placeholder="昵称" v-model="name" />
-        <input type="text" placeholder="邮箱" v-model="email" />
-        <input type="text" placeholder="网址(http://)" v-model="url" />
+        <input type="text"
+               placeholder="昵称"
+               v-model="name" />
+        <input type="text"
+               placeholder="邮箱"
+               v-model="email" />
+        <input type="text"
+               placeholder="网址(http://)"
+               v-model="url" />
       </div>
 
-      <a-textarea
-        placeholder="说点什么吧~~"
-        :auto-size="{ minRows: 5, maxRows: 12 }"
-        class="comment-textarea"
-        id="comment-textarea"
-        v-model="textareaValue"
-      />
-      <p>正在回复：1111</p>
-      <a-button @click="submit">提交</a-button>
+      <a-textarea placeholder="说点什么吧~~"
+                  :auto-size="{ minRows: 5, maxRows: 12 }"
+                  class="comment-textarea"
+                  id="comment-textarea"
+                  v-model="textareaValue" />
+      <div class="wrap-bottom">
+        <p v-show="reviewers.name">正在回复：@{{reviewers.name}}</p>
+        <a-button @click="submit">提交</a-button>
+      </div>
     </div>
-    <div class="comment-list" v-if="commentList.length !== 0">
-      <a-comment v-for="(item, index) in commentList" :key="index">
-        <span slot="actions" key="comment-nested-reply-to" @click="reply(item)"
-          >回复</span
-        >
+    <div class="comment-list"
+         v-if="commentList.length !== 0">
+      <a-comment v-for="(item, index) in commentList"
+                 :key="index">
+        <span slot="actions"
+              key="comment-nested-reply-to"
+              @click="reply(item)">回复</span>
         <a slot="author">{{ item.name }}</a>
-        <a-avatar slot="avatar" :src="item.pic" alt="Han Solo" />
+        <a-avatar slot="avatar"
+                  :src="item.pic"
+                  alt="Han Solo" />
         <p slot="datetime">({{ item.created | moment }})</p>
         <p slot="content">
           {{ item.content }}
         </p>
-        <a-comment v-for="(list, index) in item.children" :key="index">
-          <span slot="actions" @click="reply(item)">回复</span>
-          <a slot="author"
-            >{{ list.name }}
-            <span style="color: #ccc">({{ list.time | moment }})</span></a
-          >
-          <a-avatar slot="avatar" :src="list.pic" alt="Han Solo" />
+        <a-comment v-for="(list, index) in item.children"
+                   :key="index">
+          <span slot="actions"
+                @click="reply(item,list)">回复</span>
+          <a slot="author">{{ list.name }}
+            <span style="color: #ccc">({{ list.time | moment }})</span></a>
+          <a-avatar slot="avatar"
+                    :src="list.pic"
+                    alt="Han Solo" />
           <p slot="content">
             {{ list.content }}
           </p>
@@ -52,12 +64,15 @@
       </a-comment>
       <div class="loading-more">
         <a-spin v-if="loadingMore" />
-        <a-button v-else @click="onLoadMore">
+        <a-button v-else
+                  @click="onLoadMore">
           {{ this.$store.state.comment.more }}
         </a-button>
       </div>
+      {{ this.$store.state.comment.commentList }}
     </div>
-    <div class="comment-null" v-else>
+    <div class="comment-null"
+         v-else>
       <a-empty description="暂无评论，快来抢个沙发吧" />
     </div>
   </div>
@@ -71,12 +86,12 @@ import { addComment } from '@/api/comment'
 export default {
   name: 'comment',
   computed: {
-    commentList() {
+    commentList () {
       return this.$store.state.comment.commentList
     },
   },
   filters: filters,
-  data() {
+  data () {
     return {
       page: 1,
       limit: 10,
@@ -89,15 +104,22 @@ export default {
       loadingMore: false,
     }
   },
-  mounted() {
+  watch: {
+    textareaValue (newv, oldv) {
+      if (newv === '') {
+        this.reviewers = ''
+      }
+    }
+  },
+  mounted () {
     this.$store.dispatch('comment/setCommentList', {
-      id: '5fffb4957484362910b39ef0',
+      id: '6006e67f8420473b24fd6659',
       page: this.page,
       limit: this.limit,
     })
   },
   methods: {
-    onLoadMore() {
+    onLoadMore () {
       this.loadingMore = true
       console.log(this.page)
       setTimeout(() => {
@@ -113,17 +135,28 @@ export default {
       }, 500)
       this.page += 1
     },
-    reply(index) {
-      this.reviewers = index
+    reply (item, list) {
+      // 如果是一级评论拿一级当前数据
+      // 否则拿二级评论数据拿二级当前数据
+      if (list) {
+        this.reviewers = list
+      } else {
+        this.reviewers = item
+      }
+      // 评论内容不为空切换回复人，不清空
+      if (this.textareaValue !== '') {
+        this.textareaValue = this.textareaValue
+      } else {
+        this.textareaValue = ' '
+      }
       // 插入@ + name 到 textareaValue
-      this.textareaValue = '//@' + index.name + '   '
       // 动态滚动到输入框的位置，并且进行focus
       scrollToElem('.comment-textarea', 500, -240)
       // focus 输入框
       document.getElementById('comment-textarea').focus()
     },
-    submit() {
-      if (this.textareaValue === '') {
+    submit () {
+      if (this.textareaValue === '' || this.textareaValue === ' ') {
         this.$message.error('提交失败，内容不能为空')
         return
       }
@@ -141,18 +174,29 @@ export default {
       let tid = this.$route.params.id
       let name = this.name || 'anonymity'
       let email = this.email || ''
+      let url = this.url || ''
       let textareaValue = this.textareaValue
-      let id = this.reviewers.id || ''
+      let id = this.reviewers._id || ''
       console.log(textareaValue)
       let data = {
         pic: pic,
         tid: tid,
         name: name,
         email: email,
+        url: url,
         textareaValue: textareaValue,
         id: id,
       }
+      // 发起axios请求
       addComment(data)
+
+      this.$store.dispatch('comment/setCommentList', {
+        id: '6006e67f8420473b24fd6659',
+        page: this.page,
+        limit: this.limit,
+      })
+
+
     },
   },
 }
@@ -222,10 +266,18 @@ export default {
     textarea:focus {
       box-shadow: none;
     }
-    .ant-btn {
-      float: right;
-      margin-top: 15px;
-      margin-bottom: 10px;
+    .wrap-bottom {
+      height: 32px;
+      line-height: 32px;
+      margin-top: 20px;
+      padding: 0 4px;
+      p {
+        color: #3479fa;
+        float: left;
+      }
+      .ant-btn {
+        float: right;
+      }
     }
   }
 }
