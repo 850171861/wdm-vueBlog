@@ -1,6 +1,5 @@
 import mongoose from '../config/dbConfig'
 
-
 const Schema = mongoose.Schema
 
 const CommentSchema = new Schema({

@@ -12,9 +12,27 @@ const mutations = {
     if (value.commentList.length === 0) {
       state.more = '没有更多了'
     }
-    // const data = state.commentList.concat(value.commentList)
-
-    state.commentList = value.commentList
+    const data = state.commentList.concat(value.commentList)
+    state.commentList = data
+  },
+  // 改变commentList更新评论视图
+  updateCommentList(state, value) {
+    if (value.beReplyName === '') {
+      state.commentList.unshift(value)
+    } else {
+      state.commentList.forEach(element => {
+        if (element._id === value.id) {
+          console.log(element.children)
+          if (!element.children) {
+            element.children = []
+            console.log(element)
+            element.children.unshift(value)
+          } else {
+            element.children.unshift(value)
+          }
+        }
+      })
+    }
   }
 }
 
@@ -22,11 +40,11 @@ const actions = {
   async setCommentList({
     commit,
     state
-  }, id) {
-    console.log(id)
+  }, query) {
     const {
       data
-    } = await getcomment(id)
+    } = await getcomment(query)
+
     commit('setCommentList', {
       commentList: data
     })

@@ -16,8 +16,6 @@ class CommentsController {
       created: -1
     })
 
-
-
     ctx.body = {
       code: 200,
       data: result
@@ -26,6 +24,7 @@ class CommentsController {
 
   // 增加评论
   async addComment(ctx) {
+    let result
     const {
       id,
       pic,
@@ -33,7 +32,9 @@ class CommentsController {
       name,
       email,
       url,
-      textareaValue
+      content,
+      beReplyContent,
+      beReplyName
     } = ctx.request.body
     // 有id代表发送过来的是二级评论，直接插入children数组
     if (id) {
@@ -47,7 +48,9 @@ class CommentsController {
               name: name,
               email: email,
               url: url,
-              content: textareaValue,
+              content: content,
+              beReplyContent: beReplyContent,
+              beReplyName: beReplyName,
               time: new Date()
             }],
             $position: 0
@@ -64,15 +67,16 @@ class CommentsController {
           }
         })
       }
-
     } else {
       const data = await comment({
         tid: tid,
         pic: pic,
         name: name,
-        content: textareaValue
+        content: content
       })
-      const result = await data.save()
+
+      result = await data.save()
+
       if (result) {
         const articleAnswer = await article.updateOne({
           _id: tid
@@ -86,7 +90,8 @@ class CommentsController {
 
     ctx.body = {
       code: 200,
-      message: '评论成功'
+      message: '评论成功',
+      data: result
     }
   }
 }

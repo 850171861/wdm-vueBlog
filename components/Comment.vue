@@ -12,67 +12,56 @@
     <!-- 评论表单 -->
     <div class="wrap">
       <div class="wrap-input">
-        <input type="text"
-               placeholder="昵称"
-               v-model="name" />
-        <input type="text"
-               placeholder="邮箱"
-               v-model="email" />
-        <input type="text"
-               placeholder="网址(http://)"
-               v-model="url" />
+        <input type="text" placeholder="昵称" v-model="name" />
+        <input type="text" placeholder="邮箱" v-model="email" />
+        <input type="text" placeholder="网址(http://)" v-model="url" />
       </div>
 
-      <a-textarea placeholder="说点什么吧~~"
-                  :auto-size="{ minRows: 5, maxRows: 12 }"
-                  class="comment-textarea"
-                  id="comment-textarea"
-                  v-model="textareaValue" />
+      <a-textarea
+        placeholder="说点什么吧~~"
+        :auto-size="{ minRows: 5, maxRows: 12 }"
+        class="comment-textarea"
+        id="comment-textarea"
+        v-model="content"
+      />
       <div class="wrap-bottom">
-        <p v-show="reviewers.name">正在回复：@{{reviewers.name}}</p>
+        <p v-show="reviewers.name">正在回复：@{{ reviewers.name }}</p>
         <a-button @click="submit">提交</a-button>
       </div>
     </div>
-    <div class="comment-list"
-         v-if="commentList.length !== 0">
-      <a-comment v-for="(item, index) in commentList"
-                 :key="index">
-        <span slot="actions"
-              key="comment-nested-reply-to"
-              @click="reply(item)">回复</span>
+    <div class="comment-list" v-if="commentList.length !== 0">
+      <a-comment v-for="(item, index) in commentList" :key="index">
+        <span slot="actions" key="comment-nested-reply-to" @click="reply(item)"
+          >回复</span
+        >
         <a slot="author">{{ item.name }}</a>
-        <a-avatar slot="avatar"
-                  :src="item.pic"
-                  alt="Han Solo" />
+        <a-avatar slot="avatar" :src="item.pic" alt="Han Solo" />
         <p slot="datetime">({{ item.created | moment }})</p>
         <p slot="content">
           {{ item.content }}
         </p>
-        <a-comment v-for="(list, index) in item.children"
-                   :key="index">
-          <span slot="actions"
-                @click="reply(item,list)">回复</span>
-          <a slot="author">{{ list.name }}
-            <span style="color: #ccc">({{ list.time | moment }})</span></a>
-          <a-avatar slot="avatar"
-                    :src="list.pic"
-                    alt="Han Solo" />
+        <a-comment v-for="(list, index) in item.children" :key="index">
+          <span slot="actions" @click="reply(item, list)">回复</span>
+          <a slot="author"
+            >{{ list.name }}
+            <span style="color: #ccc">({{ list.time | moment }})</span></a
+          >
+          <a-avatar slot="avatar" :src="list.pic" alt="Han Solo" />
           <p slot="content">
-            {{ list.content }}
+            {{ list.content }} //@{{ list.beReplyName }}:{{
+              list.beReplyContent
+            }}
           </p>
         </a-comment>
       </a-comment>
       <div class="loading-more">
         <a-spin v-if="loadingMore" />
-        <a-button v-else
-                  @click="onLoadMore">
+        <a-button v-else @click="onLoadMore">
           {{ this.$store.state.comment.more }}
         </a-button>
       </div>
-      {{ this.$store.state.comment.commentList }}
     </div>
-    <div class="comment-null"
-         v-else>
+    <div class="comment-null" v-else>
       <a-empty description="暂无评论，快来抢个沙发吧" />
     </div>
   </div>
@@ -83,48 +72,50 @@
 import { scrollToElem } from '../utils/common'
 import filters from '@/directive/relativeTime'
 import { addComment } from '@/api/comment'
+
 export default {
   name: 'comment',
   computed: {
-    commentList () {
+    commentList() {
       return this.$store.state.comment.commentList
     },
   },
   filters: filters,
-  data () {
+  data() {
     return {
       page: 1,
       limit: 10,
       name: '',
       email: '',
       url: '',
-      textareaValue: '',
+      content: '',
       reviewers: '', // 评论者
       loading: true,
       loadingMore: false,
+      articleId: this.$route.params.id,
     }
   },
   watch: {
-    textareaValue (newv, oldv) {
+    content(newv, oldv) {
       if (newv === '') {
         this.reviewers = ''
       }
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.$store.dispatch('comment/setCommentList', {
-      id: '6006e67f8420473b24fd6659',
+      id: this.articleId,
       page: this.page,
       limit: this.limit,
     })
   },
   methods: {
-    onLoadMore () {
+    onLoadMore() {
       this.loadingMore = true
       console.log(this.page)
       setTimeout(() => {
         this.$store.dispatch('comment/setCommentList', {
-          id: '5fffb4957484362910b39ef7',
+          id: this.articleId,
           page: this.page,
           limit: this.limit,
         })
@@ -135,28 +126,28 @@ export default {
       }, 500)
       this.page += 1
     },
-    reply (item, list) {
-      // 如果是一级评论拿一级当前数据
-      // 否则拿二级评论数据拿二级当前数据
+    reply(item, list) {
+      // 如果是二级评论拿二级当前数据
+      // 否则拿一级评论数据拿一级当前数据
       if (list) {
         this.reviewers = list
+        this.reviewers._id = item._id
       } else {
         this.reviewers = item
       }
       // 评论内容不为空切换回复人，不清空
-      if (this.textareaValue !== '') {
-        this.textareaValue = this.textareaValue
+      if (this.content !== '') {
+        this.content = this.content
       } else {
-        this.textareaValue = ' '
+        this.content = ' '
       }
-      // 插入@ + name 到 textareaValue
       // 动态滚动到输入框的位置，并且进行focus
       scrollToElem('.comment-textarea', 500, -240)
       // focus 输入框
       document.getElementById('comment-textarea').focus()
     },
-    submit () {
-      if (this.textareaValue === '' || this.textareaValue === ' ') {
+    submit() {
+      if (this.content === '' || this.content === ' ') {
         this.$message.error('提交失败，内容不能为空')
         return
       }
@@ -175,28 +166,38 @@ export default {
       let name = this.name || 'anonymity'
       let email = this.email || ''
       let url = this.url || ''
-      let textareaValue = this.textareaValue
+      let content = this.content
       let id = this.reviewers._id || ''
-      console.log(textareaValue)
+      let beReplyContent = this.reviewers.content || ''
+      let beReplyName = this.reviewers.name || ''
+
       let data = {
         pic: pic,
         tid: tid,
         name: name,
         email: email,
         url: url,
-        textareaValue: textareaValue,
+        content: content,
+        beReplyContent: beReplyContent,
+        beReplyName: beReplyName,
         id: id,
       }
+
       // 发起axios请求
-      addComment(data)
-
-      this.$store.dispatch('comment/setCommentList', {
-        id: '6006e67f8420473b24fd6659',
-        page: this.page,
-        limit: this.limit,
+      addComment(data).then((res) => {
+        if (res.code === 200) {
+          // 提交成功之后清空表单数据
+          this.reviewers = ''
+          this.content = ''
+          // commit数据更新视图
+          if (res.data) {
+            data._id = res.data._id
+          }
+          this.$store.commit('comment/updateCommentList', data)
+          // 提示评论成功
+          this.$message.success(res.message)
+        }
       })
-
-
     },
   },
 }
