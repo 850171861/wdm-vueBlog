@@ -12,6 +12,9 @@ const ArticleSchema = new Schema({
   description: {
     type: String
   },
+  img: {
+    type: String
+  },
   category: {
     type: String
   },

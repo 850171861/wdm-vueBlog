@@ -22,7 +22,6 @@ const mutations = {
     } else {
       state.commentList.forEach(element => {
         if (element._id === value.id) {
-          console.log(element.children)
           if (!element.children) {
             element.children = []
             console.log(element)

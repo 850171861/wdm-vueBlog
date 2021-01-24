@@ -3,6 +3,8 @@ import router from './routes'
 import consola from 'consola'
 import koaBody from 'koa-body'
 import path from 'path'
+import cors from '@koa/cors'
+import JWT from 'koa-jwt'
 
 // Import and Set Nuxt.js options
 import config from '../nuxt.config.js'
@@ -13,6 +15,7 @@ const {
 } = require('nuxt')
 
 const app = new Koa()
+
 app.use(koaBody({
   multipart: true,
   formidable: {
@@ -23,6 +26,16 @@ app.use(koaBody({
     console.log('koabody TCL: err', err)
   }
 }))
+// 允许跨域
+app.use(cors())
+// 不需要验证接口,如前端的所有的路由 /api，后端的/longi
+const jwt = JWT({
+  secret: '33pG2mD51xMo%OUOTo$ZWOa3TYt328tcjXtW9&hn%AOb9q'
+}).unless({
+  path: ['/', /^\/__webpack_hmr/, /^\/_nuxt/, /^\/article/, /^\/category/, /^\/api/, /^\/login/]
+})
+app.use(jwt)
+// 路由挂载
 app.use(router())
 
 config.dev = app.env !== 'production'

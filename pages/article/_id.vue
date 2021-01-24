@@ -14,8 +14,10 @@
       <div class="related-articles">
         <div class="related">相关文章</div>
         <ul class="ul-related">
-          <li><a href="">222</a></li>
-          <li><a href="">222</a></li>
+          <li v-for="(item,index) in related">
+            <nuxt-link tag="a"
+                       :to="item._id">{{item.title}}</nuxt-link>
+          </li>
         </ul>
         <ul class="ul-copyright">
           <li><span>本文作者：</span> var author='wdm'</li>
@@ -50,10 +52,11 @@ export default {
   },
 
   async asyncData ({ params, error }) {
-    const { code, data } = await getArticleInfo(params)
+    const { code, data, related } = await getArticleInfo(params)
     if (code === 200) {
       return {
         data: data,
+        related: related
       }
     }
   },

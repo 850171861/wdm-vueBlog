@@ -8,8 +8,18 @@ const CategorySchema = new Schema({
   },
   icon: {
     type: String
+  },
+  created: {
+    type: Date
+  },
+  status: {
+    type: Date
   }
+})
 
+CategorySchema.pre('save', function (next) {
+  this.created = new Date()
+  next()
 })
 
 const CategoryModel = mongoose.model('category', CategorySchema)

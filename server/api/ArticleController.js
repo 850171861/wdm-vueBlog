@@ -50,6 +50,14 @@ class ArticleController {
     const result = await article.findOne({
       _id: id
     })
+    // 更新文章阅读记数
+    const updateReads = await article.updateOne({
+      _id: id
+    }, {
+      $inc: {
+        reads: 1
+      }
+    })
 
     // 将字符串切割相隔3个
     function splitChunks(string) {
@@ -70,7 +78,9 @@ class ArticleController {
       strArr.push(title)
     }
     query.$or = strArr
-    const related = await article.find(query).limit(4)
+    const relatedResult = await article.find(query).limit(6)
+    const related = relatedResult.filter(item => item.id != id)
+
     ctx.body = {
       code: 200,
       data: result,

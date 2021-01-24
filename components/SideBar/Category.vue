@@ -7,12 +7,12 @@
              alt="分类" /></i>
       <div class="type">
         <ul>
-          <nuxt-link :to="'/category/' + item._id"
+          <nuxt-link :to="'/category/' + item.name"
                      tag="li"
                      v-for="(item, index) in category"
                      :key="index">
-            <span>{{ item._id }}</span>
-            <span>共{{ item.count }}篇文章</span>
+            <span>{{ item.name }}</span>
+            <span>共{{ item.articleCount }}篇文章</span>
           </nuxt-link>
         </ul>
       </div>

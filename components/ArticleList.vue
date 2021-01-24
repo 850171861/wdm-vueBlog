@@ -28,7 +28,7 @@
           </span>
         </template>
         <img slot="extra"
-             v-if="item.avatar !== ''"
+             v-if="item.img !== ''"
              width="200"
              alt="logo"
              :src="item.url" />

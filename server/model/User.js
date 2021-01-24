@@ -1,10 +1,23 @@
 import mongoose from '../config/dbConfig'
+const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
-  username: { type: String },
-  password: { type: String },
-  name: { type: String },
-  pic: { type: String, default: '/img/header.jpg' }
+  username: {
+    type: String
+  },
+  password: {
+    type: String
+  },
+  name: {
+    type: String
+  },
+  pic: {
+    type: String,
+    default: '/picImg/pic6.png'
+  },
+  roles: {
+    type: Array
+  }
 })
 
 UserSchema.pre('save', function (next) {
@@ -12,6 +25,6 @@ UserSchema.pre('save', function (next) {
   next()
 })
 
-const UserModel = mongoose.model('users', UserSchema)
+const UserModel = mongoose.model('user', UserSchema)
 
 export default UserModel

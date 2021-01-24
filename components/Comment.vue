@@ -12,41 +12,51 @@
     <!-- 评论表单 -->
     <div class="wrap">
       <div class="wrap-input">
-        <input type="text" placeholder="昵称" v-model="name" />
-        <input type="text" placeholder="邮箱" v-model="email" />
-        <input type="text" placeholder="网址(http://)" v-model="url" />
+        <input type="text"
+               placeholder="昵称"
+               v-model="name" />
+        <input type="text"
+               placeholder="邮箱"
+               v-model="email" />
+        <input type="text"
+               placeholder="网址(http://)"
+               v-model="url" />
       </div>
 
-      <a-textarea
-        placeholder="说点什么吧~~"
-        :auto-size="{ minRows: 5, maxRows: 12 }"
-        class="comment-textarea"
-        id="comment-textarea"
-        v-model="content"
-      />
+      <a-textarea placeholder="说点什么吧~~"
+                  :auto-size="{ minRows: 5, maxRows: 12 }"
+                  class="comment-textarea"
+                  id="comment-textarea"
+                  v-model="content" />
       <div class="wrap-bottom">
         <p v-show="reviewers.name">正在回复：@{{ reviewers.name }}</p>
         <a-button @click="submit">提交</a-button>
       </div>
     </div>
-    <div class="comment-list" v-if="commentList.length !== 0">
-      <a-comment v-for="(item, index) in commentList" :key="index">
-        <span slot="actions" key="comment-nested-reply-to" @click="reply(item)"
-          >回复</span
-        >
+    <div class="comment-list"
+         v-if="commentList.length !== 0">
+      <a-comment v-for="(item, index) in commentList"
+                 :key="index">
+        <span slot="actions"
+              key="comment-nested-reply-to"
+              @click="reply(item)">回复</span>
         <a slot="author">{{ item.name }}</a>
-        <a-avatar slot="avatar" :src="item.pic" alt="Han Solo" />
+        <a-avatar slot="avatar"
+                  :src="item.pic"
+                  alt="Han Solo" />
         <p slot="datetime">({{ item.created | moment }})</p>
         <p slot="content">
           {{ item.content }}
         </p>
-        <a-comment v-for="(list, index) in item.children" :key="index">
-          <span slot="actions" @click="reply(item, list)">回复</span>
-          <a slot="author"
-            >{{ list.name }}
-            <span style="color: #ccc">({{ list.time | moment }})</span></a
-          >
-          <a-avatar slot="avatar" :src="list.pic" alt="Han Solo" />
+        <a-comment v-for="(list, index) in item.children"
+                   :key="index">
+          <span slot="actions"
+                @click="reply(item, list)">回复</span>
+          <a slot="author">{{ list.name }}
+            <span style="color: #ccc">({{ list.time | moment }})</span></a>
+          <a-avatar slot="avatar"
+                    :src="list.pic"
+                    alt="Han Solo" />
           <p slot="content">
             {{ list.content }} //@{{ list.beReplyName }}:{{
               list.beReplyContent
@@ -56,12 +66,14 @@
       </a-comment>
       <div class="loading-more">
         <a-spin v-if="loadingMore" />
-        <a-button v-else @click="onLoadMore">
+        <a-button v-else
+                  @click="onLoadMore">
           {{ this.$store.state.comment.more }}
         </a-button>
       </div>
     </div>
-    <div class="comment-null" v-else>
+    <div class="comment-null"
+         v-else>
       <a-empty description="暂无评论，快来抢个沙发吧" />
     </div>
   </div>
@@ -76,12 +88,12 @@ import { addComment } from '@/api/comment'
 export default {
   name: 'comment',
   computed: {
-    commentList() {
+    commentList () {
       return this.$store.state.comment.commentList
     },
   },
   filters: filters,
-  data() {
+  data () {
     return {
       page: 1,
       limit: 10,
@@ -96,13 +108,13 @@ export default {
     }
   },
   watch: {
-    content(newv, oldv) {
+    content (newv, oldv) {
       if (newv === '') {
         this.reviewers = ''
       }
     },
   },
-  mounted() {
+  mounted () {
     this.$store.dispatch('comment/setCommentList', {
       id: this.articleId,
       page: this.page,
@@ -110,7 +122,7 @@ export default {
     })
   },
   methods: {
-    onLoadMore() {
+    onLoadMore () {
       this.loadingMore = true
       console.log(this.page)
       setTimeout(() => {
@@ -126,7 +138,7 @@ export default {
       }, 500)
       this.page += 1
     },
-    reply(item, list) {
+    reply (item, list) {
       // 如果是二级评论拿二级当前数据
       // 否则拿一级评论数据拿一级当前数据
       if (list) {
@@ -146,7 +158,7 @@ export default {
       // focus 输入框
       document.getElementById('comment-textarea').focus()
     },
-    submit() {
+    submit () {
       if (this.content === '' || this.content === ' ') {
         this.$message.error('提交失败，内容不能为空')
         return
@@ -195,7 +207,7 @@ export default {
           }
           this.$store.commit('comment/updateCommentList', data)
           // 提示评论成功
-          this.$message.success(res.message)
+          this.$message.success(res.data.message)
         }
       })
     },
