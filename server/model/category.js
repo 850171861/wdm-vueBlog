@@ -9,11 +9,12 @@ const CategorySchema = new Schema({
   icon: {
     type: String
   },
+
   created: {
     type: Date
   },
   status: {
-    type: Date
+    type: Number
   }
 })
 
@@ -22,6 +23,6 @@ CategorySchema.pre('save', function (next) {
   next()
 })
 
-const CategoryModel = mongoose.model('category', CategorySchema)
+const CategoryModel = mongoose.model('categorys', CategorySchema)
 
 export default CategoryModel

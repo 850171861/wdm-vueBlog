@@ -1,15 +1,15 @@
 <template>
   <section class="m-top">
-    <a-card title="标签"
-            :bordered="false"
-            :hoverable="true">
-      <i class="icon"><img src="@/static/img/label.png"
-             alt="标签" /></i>
+    <a-card title="标签" :bordered="false" :hoverable="true">
+      <i class="icon"><img src="@/static/img/label.png" alt="标签" /></i>
       <div class="box">
-        <nuxt-link :to="'/tags/'+item.name"
-                   tag="a-card-grid"
-                   v-for="(item,index) in tagList"
-                   :key="index"># {{item.name}} [{{item.number}}] </nuxt-link>
+        <nuxt-link
+          :to="'/tags/' + item.name"
+          tag="a-card-grid"
+          v-for="(item, index) in tagList"
+          :key="index"
+          ># {{ item.name }} [{{ item.articleCount }}]
+        </nuxt-link>
       </div>
     </a-card>
   </section>
@@ -19,10 +19,10 @@
 export default {
   name: 'tag',
   computed: {
-    tagList () {
+    tagList() {
       return this.$store.state.tag.tagList
-    }
-  }
+    },
+  },
 }
 </script>
 
