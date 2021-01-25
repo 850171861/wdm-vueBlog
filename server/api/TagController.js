@@ -5,27 +5,22 @@ import moment from 'dayjs'
 class TagController {
   // 获标签列表
   async getTagList(ctx) {
-    let data
-    if (ctx.query.status == 1) {
-      data = await tag.aggregate([
-        {
-          $lookup: {
-            from: 'articles',
-            localField: 'name',
-            foreignField: 'tag',
-            as: 'articleCount'
-          }
-        },
-        {
-          $match:
-          {
-            status: 1
-          }
-        },
-        { $sort: { created: -1 } }
-      ])
+    const {
+      status
+    } = ctx.query
+    let match
+    if (status == 1) {
+      match = {
+        $match: {
+          status: 1
+        }
+      }
     } else {
-      data = await tag.aggregate([{
+      match = {
+        $match: {}
+      }
+    }
+    const data = await tag.aggregate([{
         $lookup: {
           from: 'articles',
           localField: 'name',
@@ -33,11 +28,13 @@ class TagController {
           as: 'articleCount'
         }
       },
-      { $sort: { created: -1 } }
-      ])
-    }
-
-
+      match,
+      {
+        $sort: {
+          created: -1
+        }
+      }
+    ])
 
     data.forEach(item => {
       item.articleCount = item.articleCount.length
@@ -45,14 +42,20 @@ class TagController {
     })
     ctx.body = {
       code: 200,
-      data: data
+      data: data,
+      msg: '获取数据成功'
     }
   }
 
   // 新增标签
   async addTag(ctx) {
-    const { body } = ctx.request
-    const data = await tag(body).save()
+    const {
+      body
+    } = ctx.request
+    const result = await tag(body).save()
+    let data = result.toObject()
+    data.articleCount = 0;
+    data.created = moment(data.created).format("YYYY-MM-DD HH:mm:ss"); //转换时间
     ctx.body = {
       code: 200,
       data: data,
@@ -62,8 +65,19 @@ class TagController {
 
   // 修改标签
   async updateTag(ctx) {
-    const { _id, name, status } = ctx.request.body
-    const data = await tag.updateOne({ _id }, { $set: { name, status } })
+    const {
+      _id,
+      name,
+      status
+    } = ctx.request.body
+    const data = await tag.updateOne({
+      _id
+    }, {
+      $set: {
+        name,
+        status
+      }
+    })
     if (data.nModified == 1 && data.ok == 1) {
       ctx.body = {
         code: 200,

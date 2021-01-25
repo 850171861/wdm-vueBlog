@@ -19,7 +19,9 @@ export const actions = {
     { // 获取标签列表
       const {
         data
-      } = await tagList()
+      } = await tagList({
+        status: 1
+      })
       commit('tag/setTagList', {
         tagList: data
       })
@@ -28,7 +30,9 @@ export const actions = {
     {
       const {
         data
-      } = await categoryList()
+      } = await categoryList({
+        status: 1
+      })
       commit('category/setCategoryList', {
         categoryList: data
       })
