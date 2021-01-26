@@ -1,6 +1,7 @@
 import comment from '../model/comment'
 import article from '../model/Article'
-// import uuid from 'node-uuid';
+import { v4 as uuidv4 } from 'uuid'
+
 class CommentsController {
   // 获取评论
   async getComment(ctx) {
@@ -9,10 +10,13 @@ class CommentsController {
       page,
       limit
     } = ctx.query
-
-    const result = await comment.find({
-      tid: id
-    }).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({
+    let query
+    if (id) {
+      query = { tid: id }
+    } else {
+      query = {}
+    }
+    const result = await comment.find(query).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({
       created: -1
     })
 
@@ -44,6 +48,7 @@ class CommentsController {
         $push: {
           children: {
             $each: [{
+              id: uuidv4(),
               pic: pic,
               name: name,
               email: email,
@@ -51,7 +56,7 @@ class CommentsController {
               content: content,
               beReplyContent: beReplyContent,
               beReplyName: beReplyName,
-              time: new Date()
+              created: new Date()
             }],
             $position: 0
           }
@@ -72,7 +77,9 @@ class CommentsController {
         tid: tid,
         pic: pic,
         name: name,
-        content: content
+        content: content,
+        email: email,
+        url: url
       })
 
       result = await data.save()
@@ -92,6 +99,23 @@ class CommentsController {
       code: 200,
       message: '评论成功',
       data: result
+    }
+  }
+
+  // 删除评论
+  async deleteComment(ctx) {
+    const { id, _id } = ctx.request.body
+    let result
+    if (_id) {
+      result = await comment.deleteOne({ _id: _id })
+    } else {
+      result = await comment.updateOne({}, { $pull: { children: { id: id } } })
+    }
+
+    ctx.body = {
+      code: 200,
+      data: result,
+      msg: '删除成功'
     }
   }
 }
@@ -121,13 +145,3 @@ export default new CommentsController()
 //   const result = await data.save()
 // }
 
-// const a = await comment.update({ _id: "5ffffb47837bb013b803f05a" }, {
-//   '$pull': {
-//     "children": { id: 2 }
-//   }
-// })
-
-// 添加
-// const a = await comment.update({ _id: '5ffffb47837bb013b803f05a' }, {
-//   $push: { children: { id: 2 } }
-// })

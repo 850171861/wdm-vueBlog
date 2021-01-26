@@ -21,19 +21,19 @@ class TagController {
       }
     }
     const data = await tag.aggregate([{
-        $lookup: {
-          from: 'articles',
-          localField: 'name',
-          foreignField: 'tag',
-          as: 'articleCount'
-        }
-      },
-      match,
-      {
-        $sort: {
-          created: -1
-        }
+      $lookup: {
+        from: 'articles',
+        localField: 'name',
+        foreignField: 'tag',
+        as: 'articleCount'
       }
+    },
+      match,
+    {
+      $sort: {
+        created: -1
+      }
+    }
     ])
 
     data.forEach(item => {
@@ -53,9 +53,9 @@ class TagController {
       body
     } = ctx.request
     const result = await tag(body).save()
-    let data = result.toObject()
-    data.articleCount = 0;
-    data.created = moment(data.created).format("YYYY-MM-DD HH:mm:ss"); //转换时间
+    const data = result.toObject()
+    data.articleCount = 0
+    data.created = moment(data.created).format('YYYY-MM-DD HH:mm:ss') //转换时间
     ctx.body = {
       code: 200,
       data: data,

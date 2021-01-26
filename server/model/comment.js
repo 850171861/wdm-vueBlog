@@ -20,6 +20,12 @@ const CommentSchema = new Schema({
   },
   created: {
     type: Date
+  },
+  email: {
+    type: String
+  },
+  url: {
+    type: String
   }
 
 })

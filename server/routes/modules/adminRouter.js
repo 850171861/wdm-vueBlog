@@ -1,7 +1,7 @@
 import Router from '@koa/router'
 import CategoryController from '../../api/categoryController'
 import TagController from '../../api/TagController'
-
+import CommentsController from '../../api/CommentController'
 const router = new Router()
 
 router.prefix('/admin')
@@ -19,4 +19,6 @@ router.post('/updateTag', TagController.updateTag)
 // 删除标签
 router.post('/deleteTag', TagController.deleteTag)
 
+// 删除评论
+router.post('/deleteComment', CommentsController.deleteComment)
 export default router
