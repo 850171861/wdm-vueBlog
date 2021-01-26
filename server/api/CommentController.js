@@ -1,6 +1,8 @@
 import comment from '../model/comment'
 import article from '../model/Article'
-import { v4 as uuidv4 } from 'uuid'
+import {
+  v4 as uuidv4
+} from 'uuid'
 
 class CommentsController {
   // 获取评论
@@ -12,7 +14,9 @@ class CommentsController {
     } = ctx.query
     let query
     if (id) {
-      query = { tid: id }
+      query = {
+        tid: id
+      }
     } else {
       query = {}
     }
@@ -104,19 +108,42 @@ class CommentsController {
 
   // 删除评论
   async deleteComment(ctx) {
-    const { id, _id } = ctx.request.body
+    const {
+      id,
+      _id
+    } = ctx.request.body
+
     let result
     if (_id) {
-      result = await comment.deleteOne({ _id: _id })
+      result = await comment.deleteOne({
+        _id: _id
+      })
     } else {
-      result = await comment.updateOne({}, { $pull: { children: { id: id } } })
+      result = await comment.update({}, {
+        $pull: {
+          children: {
+            id: id
+          }
+        }
+      }, {
+        multi: true
+      })
     }
 
-    ctx.body = {
-      code: 200,
-      data: result,
-      msg: '删除成功'
+    if (result.nModified == 1, result.ok == 1) {
+      ctx.body = {
+        code: 200,
+        data: result,
+        msg: '删除成功'
+      }
+    } else {
+      ctx.body = {
+        code: 500,
+        data: result,
+        msg: '删除成功'
+      }
     }
+
   }
 }
 
@@ -144,4 +171,3 @@ export default new CommentsController()
 //   })
 //   const result = await data.save()
 // }
-
