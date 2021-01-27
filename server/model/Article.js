@@ -9,6 +9,9 @@ const ArticleSchema = new Schema({
   content: {
     type: String
   },
+  status: {
+    type: Number
+  },
   description: {
     type: String
   },

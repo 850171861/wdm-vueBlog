@@ -33,4 +33,13 @@ router.post('/deleteWarehouse', WarehouserController.deleteWarehouse)
 
 // 上传图片
 router.post('/uploadImg', ArticleController.uploadImg)
+
+// 增加文章
+router.post('/deleteArticle', ArticleController.deleteArticle)
+// 修改文章
+router.post('/updateArticle', ArticleController.updateArticle)
+// 删除文章
+router.post('/deleteArticle', ArticleController.deleteArticle)
+
+
 export default router

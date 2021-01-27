@@ -114,42 +114,42 @@ class ArticleController {
     const total = await article.find().count()
     // 获取归档数据
     const data = await article.aggregate([{
-      $project: {
-        title: '$title',
-        reads: '$reads',
-        createdTime: {
-          $substr: [{
-            $add: ['$created', 28800000]
-          }, 0, 10]
-        },
-        created: {
-          $substr: [{
-            $add: ['$created', 28800000]
-          }, 0, 4]
-        }
-      }
-    },
-    {
-      $group: {
-        _id: '$created',
-        yearList: {
-          $push: {
-            id: '$_id',
-            title: '$title',
-            reads: '$reads',
-            created: '$createdTime'
+        $project: {
+          title: '$title',
+          reads: '$reads',
+          createdTime: {
+            $substr: [{
+              $add: ['$created', 28800000]
+            }, 0, 10]
+          },
+          created: {
+            $substr: [{
+              $add: ['$created', 28800000]
+            }, 0, 4]
           }
-        },
-        count: {
-          $sum: 1
+        }
+      },
+      {
+        $group: {
+          _id: '$created',
+          yearList: {
+            $push: {
+              id: '$_id',
+              title: '$title',
+              reads: '$reads',
+              created: '$createdTime'
+            }
+          },
+          count: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          _id: -1 // 执行完 $group，得到的结果集按照_id排列
         }
       }
-    },
-    {
-      $sort: {
-        _id: -1 // 执行完 $group，得到的结果集按照_id排列
-      }
-    }
     ])
 
     ctx.body = {
@@ -192,6 +192,74 @@ class ArticleController {
       code: 200,
       msg: '图片上传成功',
       data: filePath
+    }
+  }
+
+  // 文章增加
+  async addArticle(ctx) {
+    const {
+      body
+    } = ctx.request
+    const result = await article(body).save()
+    ctx.body = {
+      code: 200,
+      data: result,
+      msg: '添加成功'
+    }
+  }
+  // 文章修改
+  async updateArticle(ctx) {
+    const {
+      _id,
+      tag,
+      title,
+      content,
+      description,
+      category,
+      status,
+      img
+    } = ctx.request.body
+    const result = await article.updateOne({
+      _id
+    }, {
+      $set: {
+        tag,
+        title,
+        content,
+        description,
+        category,
+        status,
+        img
+      }
+    })
+    if (result.ok == 1) {
+      ctx.body = {
+        code: 200,
+        msg: '修改成功'
+      }
+    } else {
+      ctx.body = {
+        code: 500,
+        msg: '修改失败'
+      }
+    }
+  }
+  // 文章删除
+  async deleteArticle(ctx) {
+    const {
+      _id
+    } = ctx.request.body
+    const result = await article.deleteOne(_id)
+    if (result.ok == 1) {
+      ctx.body = {
+        code: 200,
+        msg: '修改成功'
+      }
+    } else {
+      ctx.body = {
+        code: 500,
+        msg: '修改失败'
+      }
     }
   }
 }
