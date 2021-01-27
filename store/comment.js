@@ -22,12 +22,11 @@ const mutations = {
     } else {
       state.commentList.forEach(element => {
         if (element._id === value.id) {
-          if (!element.children) {
-            element.children = []
-            console.log(element)
-            element.children.unshift(value)
+          if (!element.childrenData) {
+            element.childrenData = []
+            element.childrenData.unshift(value)
           } else {
-            element.children.unshift(value)
+            element.childrenData.unshift(value)
           }
         }
       })

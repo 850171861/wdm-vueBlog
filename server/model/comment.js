@@ -15,7 +15,7 @@ const CommentSchema = new Schema({
   name: {
     type: String
   },
-  children: {
+  childrenData: {
     type: Array
   },
   created: {

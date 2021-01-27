@@ -32,7 +32,7 @@ app.use(cors())
 const jwt = JWT({
   secret: '33pG2mD51xMo%OUOTo$ZWOa3TYt328tcjXtW9&hn%AOb9q'
 }).unless({
-  path: ['/', /^\/__webpack_hmr/, /^\/_nuxt/, /^\/article/, /^\/category/, /^\/api/, /^\/login/]
+  path: ['/', /^\/__webpack_hmr/, /^\/_nuxt/, /^\/article/, /^\/warehouse/, /^\/category/, /^\/api/, /^\/login/]
 })
 app.use(jwt)
 // 路由挂载
@@ -46,7 +46,7 @@ async function start() {
 
   const {
     host = process.env.HOST || '127.0.0.1',
-      port = process.env.PORT || 3000
+    port = process.env.PORT || 3000
   } = nuxt.options.server
 
   await nuxt.ready()

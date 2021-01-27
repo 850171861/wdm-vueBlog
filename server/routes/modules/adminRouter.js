@@ -2,6 +2,7 @@ import Router from '@koa/router'
 import CategoryController from '../../api/categoryController'
 import TagController from '../../api/TagController'
 import CommentsController from '../../api/CommentController'
+import WarehouserController from '../../api/WarehouseController'
 const router = new Router()
 
 router.prefix('/admin')
@@ -21,4 +22,12 @@ router.post('/deleteTag', TagController.deleteTag)
 
 // 删除评论
 router.post('/deleteComment', CommentsController.deleteComment)
+
+// 添加仓库
+router.post('/addWarehouse', WarehouserController.addWarehouse)
+// 修改仓库
+router.post('/updateWarehouse', WarehouserController.updateWarehouse)
+// 删除仓库
+router.post('/deleteWarehouse', WarehouserController.deleteWarehouse)
+
 export default router

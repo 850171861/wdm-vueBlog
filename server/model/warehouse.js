@@ -22,6 +22,6 @@ WarehouseSchema.pre('save', function (next) {
   next()
 })
 
-const WarehouseModel = mongoose.model('warebouse', WarehouseSchema)
+const WarehouseModel = mongoose.model('warehouse', WarehouseSchema)
 
 export default WarehouseModel

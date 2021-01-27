@@ -2,22 +2,20 @@ import {
   getArchive
 } from '@/api/archive'
 
-
 const state = () => ({
   total: 0,
   archiveList: []
 })
 
 const mutations = {
-  setArchive(state, value) {
-    console.log(value)
+  setArchive (state, value) {
     state.total = value.data.total
     state.data
   }
 }
 
 const actions = {
-  async setArchive({
+  async setArchive ({
     commit
   }) {
     const {

@@ -20,19 +20,19 @@ class CategoryController {
       }
     }
     const data = await category.aggregate([{
-        $lookup: {
-          from: 'articles',
-          localField: 'name',
-          foreignField: 'category',
-          as: 'articleCount'
-        }
-      },
-      match,
-      {
-        $sort: {
-          created: -1
-        }
+      $lookup: {
+        from: 'articles',
+        localField: 'name',
+        foreignField: 'category',
+        as: 'articleCount'
       }
+    },
+      match,
+    {
+      $sort: {
+        created: -1
+      }
+    }
     ])
 
     data.forEach(item => {
@@ -77,7 +77,7 @@ class CategoryController {
         status
       }
     })
-    console.log(data)
+
     if (data.nModified == 1 && data.ok == 1) {
       ctx.body = {
         code: 200,

@@ -40,7 +40,7 @@
         <p slot="content">
           {{ item.content }}
         </p>
-        <a-comment v-for="(list, index) in item.children" :key="index">
+        <a-comment v-for="(list, index) in item.childrenData" :key="index">
           <span slot="actions" @click="reply(item, list)">回复</span>
           <a slot="author"
             >{{ list.name }}
@@ -112,7 +112,6 @@ export default {
   methods: {
     onLoadMore() {
       this.loadingMore = true
-      console.log(this.page)
       setTimeout(() => {
         this.$store.dispatch('comment/setCommentList', {
           id: this.articleId,

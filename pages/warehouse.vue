@@ -1,17 +1,12 @@
 <template>
   <div class="warehouse">
-    <a-card hoverable
-            v-for="(item,index) in warehouseList"
-            :key="index">
-      <template slot="actions"
-                class="ant-card-actions">
-        <nuxt-link :to="item.url">访问</nuxt-link>
+    <a-card hoverable v-for="(item, index) in warehouseList" :key="index">
+      <template slot="actions" class="ant-card-actions">
+        <a target="_blank" :href="'http://' + item.url + '.com'">访问</a>
       </template>
-      <a-card-meta :title="item.title"
-                   :description="item.content">
+      <a-card-meta :title="item.title" :description="item.content">
       </a-card-meta>
     </a-card>
-
   </div>
 </template>
 
@@ -19,13 +14,12 @@
 import { getWarehouse } from '@/api/warehouse'
 export default {
   name: 'warehouse',
-  async asyncData ({ params, error }) {
+  async asyncData({ params, error }) {
     const { data } = await getWarehouse()
-
     return {
-      warehouseList: data
+      warehouseList: data,
     }
-  }
+  },
 }
 </script>
 

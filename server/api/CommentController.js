@@ -6,7 +6,7 @@ import {
 
 class CommentsController {
   // 获取评论
-  async getComment(ctx) {
+  async getComment (ctx) {
     const {
       id,
       page,
@@ -31,7 +31,7 @@ class CommentsController {
   }
 
   // 增加评论
-  async addComment(ctx) {
+  async addComment (ctx) {
     let result
     const {
       id,
@@ -50,7 +50,7 @@ class CommentsController {
         _id: id
       }, {
         $push: {
-          children: {
+          childrenData: {
             $each: [{
               id: uuidv4(),
               pic: pic,
@@ -107,12 +107,11 @@ class CommentsController {
   }
 
   // 删除评论
-  async deleteComment(ctx) {
+  async deleteComment (ctx) {
     const {
       id,
       _id
     } = ctx.request.body
-
     let result
     if (_id) {
       result = await comment.deleteOne({
@@ -121,7 +120,7 @@ class CommentsController {
     } else {
       result = await comment.update({}, {
         $pull: {
-          children: {
+          childrenData: {
             id: id
           }
         }
@@ -130,7 +129,7 @@ class CommentsController {
       })
     }
 
-    if (result.nModified == 1, result.ok == 1) {
+    if (result.ok == 1) {
       ctx.body = {
         code: 200,
         data: result,
@@ -140,10 +139,9 @@ class CommentsController {
       ctx.body = {
         code: 500,
         data: result,
-        msg: '删除成功'
+        msg: '删除失败'
       }
     }
-
   }
 }
 
