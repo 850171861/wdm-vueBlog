@@ -1,4 +1,13 @@
 import article from '../model/Article.js'
+import path from 'path'
+import moment from 'dayjs'
+import mkdir from 'make-dir'
+import fs from 'fs'
+
+import {
+  v4 as uuidv4
+} from 'uuid'
+
 class ArticleController {
   // 文章列表
   async getArticleList(ctx) {
@@ -34,7 +43,6 @@ class ArticleController {
     })
     const total = await article.find(query).count()
 
-
     ctx.body = {
       code: 200,
       data: data,
@@ -61,16 +69,16 @@ class ArticleController {
 
     // 将字符串切割相隔3个
     function splitChunks(string) {
-      var regex = RegExp(".{1," + Math.ceil(string.length / (string.length / 3)) + "}", 'g');
-      return string.match(regex);
+      const regex = RegExp('.{1,' + Math.ceil(string.length / (string.length / 3)) + '}', 'g')
+      return string.match(regex)
     }
     // 相关文章查询
-    let query = {}
-    let title = result.title
-    let str = splitChunks(title)
-    let strArr = []
+    const query = {}
+    const title = result.title
+    const str = splitChunks(title)
+    const strArr = []
     for (let i = 0; i < str.length; i++) {
-      let title = {
+      const title = {
         title: {
           $regex: new RegExp(str[i], 'i')
         }
@@ -106,42 +114,42 @@ class ArticleController {
     const total = await article.find().count()
     // 获取归档数据
     const data = await article.aggregate([{
-        $project: {
-          title: '$title',
-          reads: '$reads',
-          createdTime: {
-            $substr: [{
-              $add: ['$created', 28800000]
-            }, 0, 10]
-          },
-          created: {
-            $substr: [{
-              $add: ['$created', 28800000]
-            }, 0, 4]
-          }
-        }
-      },
-      {
-        $group: {
-          _id: '$created',
-          yearList: {
-            $push: {
-              id: '$_id',
-              title: '$title',
-              reads: '$reads',
-              created: '$createdTime'
-            }
-          },
-          count: {
-            $sum: 1
-          }
-        }
-      },
-      {
-        $sort: {
-          _id: -1 // 执行完 $group，得到的结果集按照_id排列
+      $project: {
+        title: '$title',
+        reads: '$reads',
+        createdTime: {
+          $substr: [{
+            $add: ['$created', 28800000]
+          }, 0, 10]
+        },
+        created: {
+          $substr: [{
+            $add: ['$created', 28800000]
+          }, 0, 4]
         }
       }
+    },
+    {
+      $group: {
+        _id: '$created',
+        yearList: {
+          $push: {
+            id: '$_id',
+            title: '$title',
+            reads: '$reads',
+            created: '$createdTime'
+          }
+        },
+        count: {
+          $sum: 1
+        }
+      }
+    },
+    {
+      $sort: {
+        _id: -1 // 执行完 $group，得到的结果集按照_id排列
+      }
+    }
     ])
 
     ctx.body = {
@@ -150,23 +158,42 @@ class ArticleController {
       total
     }
   }
+
+  // 上传图片
+  async uploadImg(ctx) {
+    // 定义上传路径
+    const uploadPath = process.env.NODE_ENV === 'production' ? 'static/images' : path.join(path.resolve(__dirname), '../../static/images')
+    // 回去上传信息
+    const file = ctx.request.files.file
+    // 上传图片大于2m 不能上传
+    if (file.size > 2048000) {
+      ctx.body = {
+        code: 200,
+        msg: '图片不能大于2M'
+      }
+      return
+    }
+    // 图片格式
+    const ext = file.name.split('.').pop()
+    // 创建存储目录路径
+    const dir = `${uploadPath}/${moment().format('YYYYMMDD')}`
+    // 判断路径是否存在，不存在则创建
+    await mkdir(dir)
+    // 存储文件到指定的路径
+    // 使用uuid做为唯一的名称
+    const picname = uuidv4()
+    const destPath = `${dir}/${picname}.${ext}`
+    const reader = fs.createReadStream(file.path)
+    const upStream = fs.createWriteStream(destPath)
+    const filePath = `/images/${moment().format('YYYYMMDD')}/${picname}.${ext}`
+    reader.pipe(upStream)
+
+    ctx.body = {
+      code: 200,
+      msg: '图片上传成功',
+      data: filePath
+    }
+  }
 }
 
 export default new ArticleController()
-
-// for (let i = 0; i < 12; i++) {
-//   const items = ['vue', 'node', 'js']
-//   const item = items[Math.floor(Math.random() * items.length)]
-//   const data = await article({
-//     title: '测试' + i,
-//     content: '内容内容内容+i',
-//     description: '描述' + i,
-//     tag: [item, 'react'],
-//     category: item
-//   })
-//   const result = await data.save()
-// }
-// ctx.body = {
-//   code: 200,
-//   data: 1
-// }

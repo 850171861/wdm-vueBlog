@@ -3,6 +3,7 @@ import CategoryController from '../../api/categoryController'
 import TagController from '../../api/TagController'
 import CommentsController from '../../api/CommentController'
 import WarehouserController from '../../api/WarehouseController'
+import ArticleController from '../../api/ArticleController'
 const router = new Router()
 
 router.prefix('/admin')
@@ -30,4 +31,6 @@ router.post('/updateWarehouse', WarehouserController.updateWarehouse)
 // 删除仓库
 router.post('/deleteWarehouse', WarehouserController.deleteWarehouse)
 
+// 上传图片
+router.post('/uploadImg', ArticleController.uploadImg)
 export default router

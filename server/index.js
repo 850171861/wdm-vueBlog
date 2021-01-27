@@ -32,7 +32,7 @@ app.use(cors())
 const jwt = JWT({
   secret: '33pG2mD51xMo%OUOTo$ZWOa3TYt328tcjXtW9&hn%AOb9q'
 }).unless({
-  path: ['/', /^\/__webpack_hmr/, /^\/_nuxt/, /^\/article/, /^\/warehouse/, /^\/category/, /^\/api/, /^\/login/]
+  path: ['/', /^\/__webpack_hmr/, /^\/_nuxt/, /^\/images/, /^\/article/, /^\/warehouse/, /^\/category/, /^\/api/, /^\/login/]
 })
 app.use(jwt)
 // 路由挂载
@@ -40,7 +40,7 @@ app.use(router())
 
 config.dev = app.env !== 'production'
 
-async function start() {
+async function start () {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 
