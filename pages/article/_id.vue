@@ -1,29 +1,29 @@
 <template>
   <div class="article_id clearfix">
-    <div class="left-content"
-         v-if="articleDetail.artTitle">
+    <div class="left-content" v-if="articleDetail.artTitle">
       <h2 class="article-title">{{ data.title }}</h2>
       <p class="article-info">
-        <span>发布于：{{ data.created | moment }}</span><span>{{ data.reads }}次浏览</span><span>{{ data.answer }} 条评论</span>
+        <span>发布于：{{ data.created | moment }}</span
+        ><span>{{ data.reads }}次浏览</span
+        ><span>{{ data.answer }} 条评论</span>
       </p>
-      <div class="article-content"
-           id="r-md-preview">
+      <div class="article-content" id="r-md-preview">
         <div v-html="data.content"></div>
       </div>
       <!-- 相关文章 -->
       <div class="related-articles">
         <div class="related">相关文章</div>
         <ul class="ul-related">
-          <li v-for="(item,index) in related">
-            <nuxt-link tag="a"
-                       :to="item._id">{{item.title}}</nuxt-link>
+          <li v-for="(item, index) in related">
+            <nuxt-link tag="a" :to="item._id">{{ item.title }}</nuxt-link>
           </li>
         </ul>
         <ul class="ul-copyright">
           <li><span>本文作者：</span> var author='wdm'</li>
-          <li><span>本文链接：</span> http://{{$nuxt.$route.path}}</li>
+          <li><span>本文链接：</span> http://{{ $nuxt.$route.path }}</li>
           <li>
-            <span>版权声明：</span> 本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！
+            <span>版权声明：</span> 本博客所有文章除特别声明外，均采用 BY-NC-SA
+            许可协议。转载请注明出处！
           </li>
         </ul>
       </div>
@@ -39,24 +39,44 @@
 import comment from '../../components/Comment'
 import { getArticleInfo } from '@/api/article'
 import filters from '@/directive/relativeTime'
-
+import marked from 'marked'
+import hljs from 'highlight.js'
+import javascript from 'highlight.js/lib/languages/javascript'
+import 'highlight.js/styles/monokai-sublime.css'
 export default {
   name: 'Article',
   components: { comment },
   filters: filters,
-  data () {
+  data() {
     return {
       articleDetail: { artTitle: true },
       msg: '<h1>内容</h1>',
     }
   },
+  mounted() {
+    marked.setOptions({
+      renderer: new marked.Renderer(),
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value
+      },
+      pedantic: false,
+      gfm: true,
+      tables: true,
+      breaks: false,
+      sanitize: false,
+      smartLists: true,
+      smartypants: false,
+      xhtml: false,
+    })
+  },
 
-  async asyncData ({ params, error }) {
+  async asyncData({ params, error }) {
     const { code, data, related } = await getArticleInfo(params)
     if (code === 200) {
+      data.content = marked(data.content)
       return {
         data: data,
-        related: related
+        related: related,
       }
     }
   },

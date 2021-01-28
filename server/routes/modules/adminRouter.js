@@ -35,11 +35,10 @@ router.post('/deleteWarehouse', WarehouserController.deleteWarehouse)
 router.post('/uploadImg', ArticleController.uploadImg)
 
 // 增加文章
-router.post('/deleteArticle', ArticleController.deleteArticle)
+router.post('/addArticle', ArticleController.addArticle)
 // 修改文章
 router.post('/updateArticle', ArticleController.updateArticle)
 // 删除文章
 router.post('/deleteArticle', ArticleController.deleteArticle)
-
 
 export default router

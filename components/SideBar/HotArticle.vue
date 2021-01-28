@@ -1,7 +1,7 @@
 <template>
   <section class="m-top">
     <a-card title="热门文章" :bordered="false" :hoverable="true">
-      <i class="icon"><img src="@/static/img/remen.png" alt="热门文章" /></i>
+      <i class="icon"><img src="@/assets/images/remen.png" alt="热门文章" /></i>
       <div class="hot">
         <p v-for="(item, index) in hotArticle" :key="index">
           <span>{{ index + 1 }}</span>

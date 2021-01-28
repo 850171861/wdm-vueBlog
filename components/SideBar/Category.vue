@@ -1,16 +1,15 @@
 <template>
   <section class="m-top">
-    <a-card title="分类"
-            :bordered="false"
-            :hoverable="true">
-      <i class="icon"><img src="@/static/img/type.png"
-             alt="分类" /></i>
+    <a-card title="分类" :bordered="false" :hoverable="true">
+      <i class="icon"><img src="@/assets/images/type.png" alt="分类" /></i>
       <div class="type">
         <ul>
-          <nuxt-link :to="'/category/' + item.name"
-                     tag="li"
-                     v-for="(item, index) in category"
-                     :key="index">
+          <nuxt-link
+            :to="'/category/' + item.name"
+            tag="li"
+            v-for="(item, index) in category"
+            :key="index"
+          >
             <span>{{ item.name }}</span>
             <span>共{{ item.articleCount }}篇文章</span>
           </nuxt-link>
@@ -24,7 +23,7 @@
 export default {
   name: 'category',
   computed: {
-    category () {
+    category() {
       return this.$store.state.category.categoryList
     },
   },

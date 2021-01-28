@@ -2,7 +2,7 @@
   <!-- 关于个人 -->
   <section class="m-top">
     <a-card title="关于" :bordered="false" :hoverable="true">
-      <i class="icon"><img src="@/static/img/my.png" alt="标签" /></i>
+      <i class="icon"><img src="@/assets/images/my.png" alt="标签" /></i>
 
       <div class="author">
         <div class="pic">
@@ -15,10 +15,10 @@
         <div class="content">指尖改变世界</div>
         <div class="concat">
           <ul>
-            <li><img src="@/static/img/QQ.png" alt="qq" /></li>
-            <li><img src="@/static/img/wx.png" alt="微信" /></li>
-            <li><img src="@/static/img/github.png" alt="github" /></li>
-            <li><img src="@/static/img/email.png" alt="邮箱" /></li>
+            <li><img src="@/assets/images/QQ.png" alt="qq" /></li>
+            <li><img src="@/assets/images/wx.png" alt="微信" /></li>
+            <li><img src="@/assets/images/github.png" alt="github" /></li>
+            <li><img src="@/assets/images/email.png" alt="邮箱" /></li>
           </ul>
         </div>
       </div>

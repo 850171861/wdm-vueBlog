@@ -1,7 +1,7 @@
 <template>
   <section class="m-top">
     <a-card title="标签" :bordered="false" :hoverable="true">
-      <i class="icon"><img src="@/static/img/label.png" alt="标签" /></i>
+      <i class="icon"><img src="@/assets/images/label.png" alt="标签" /></i>
       <div class="box">
         <nuxt-link
           :to="'/tags/' + item.name"

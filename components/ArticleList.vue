@@ -31,7 +31,7 @@
              v-if="item.img !== ''"
              width="200"
              alt="logo"
-             :src="item.url" />
+             :src="item.img" />
         <a-list-item-meta :description="item.description">
           <nuxt-link :to="'/article/'+ item._id"
                      slot="title"
@@ -46,41 +46,26 @@
 
 </template>
 <script>
-// import moment from 'dayjs'
-// import relativeTime from 'dayjs/plugin/relativeTime'
-// import 'dayjs/locale/zh-cn'
-// moment.extend(relativeTime)
 import filters from '@/directive/relativeTime'
 export default {
   name: 'articleList',
-  data () {
+  data() {
     return {
       page: 1,
       limit: 10,
     }
   },
   computed: {
-    articleList () {
+    articleList() {
       return this.$store.state.article.articleList
     },
   },
   filters: filters,
-  // filters: {
-  //   moment (date) {
-  //     // 超过7天，显示日期
-  //     if (moment(date).isBefore(moment().subtract(7, 'days'))) {
-  //       return moment(date).format('YYYY-MM-DD')
-  //     } else {
-  //       // 1小前，xx小时前，X天前
-  //       return moment(date).locale('zh-cn').from(moment())
-  //     }
-  //   },
-  // },
-  mounted () {
+  mounted() {
     this.onChange()
   },
   methods: {
-    onChange (e) {
+    onChange(e) {
       let page = e || this.page
       let obj = { page: page, limit: this.limit }
       let route = this.$route
@@ -95,7 +80,7 @@ export default {
       }
       this.$store.dispatch('article/setArticleList', obj)
     },
-    getList () {
+    getList() {
       let obj = { page: this.page, limit: this.limit }
       let route = this.$route
       if (route.name === 'search-id') {
@@ -108,8 +93,8 @@ export default {
         obj['tag'] = route.params.id
       }
       this.$store.dispatch('article/setArticleList', obj)
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss" scope>

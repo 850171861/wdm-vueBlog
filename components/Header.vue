@@ -2,47 +2,37 @@
   <header class="header">
     <div class="nav">
       <h2 class="logo">
-        <nuxt-link to="/"
-                   tag="a"
-                   href="/">logo</nuxt-link>
+        <nuxt-link to="/" tag="a" href="/">logo</nuxt-link>
       </h2>
       <ul class="nav-box">
-        <nuxt-link to="/"
-                   tag="li">代码</nuxt-link>
-        <nuxt-link to="/warehouse"
-                   tag="li">仓库</nuxt-link>
-        <nuxt-link to="/archive"
-                   tag="li">归档</nuxt-link>
-        <nuxt-link to="/about"
-                   tag="li">关于我</nuxt-link>
+        <nuxt-link to="/" tag="li">代码</nuxt-link>
+        <nuxt-link to="/warehouse" tag="li">仓库</nuxt-link>
+        <nuxt-link to="/archive" tag="li">归档</nuxt-link>
+        <nuxt-link to="/about" tag="li">关于我</nuxt-link>
       </ul>
-      <a-input-search placeholder="请输入文章关键词"
-                      style="width: 200px"
-                      @search="onSearch" />
+      <a-input-search
+        placeholder="请输入文章关键词"
+        style="width: 200px"
+        @search="onSearch"
+      />
     </div>
     <div class="mobile">
-      <div class="type-nav"
-           @click="isMenu">
-        <img src="../static/img/type.png"
-             alt="导航" />
+      <div class="type-nav" @click="isMenu">
+        <img src="../assets/images/type.png" alt="导航" />
       </div>
-      <div class="mobile-menu"
-           :class="{ ismenu: ismenu }">
-        <ul class="nav-box"
-            @click="isMenu">
-          <nuxt-link to="/"
-                     tag="li">代码</nuxt-link>
-          <nuxt-link to="/warehouse"
-                     tag="li">仓库</nuxt-link>
-          <nuxt-link to="/archive"
-                     tag="li">归档</nuxt-link>
-          <nuxt-link to="/about"
-                     tag="li">关于我</nuxt-link>
+      <div class="mobile-menu" :class="{ ismenu: ismenu }">
+        <ul class="nav-box" @click="isMenu">
+          <nuxt-link to="/" tag="li">代码</nuxt-link>
+          <nuxt-link to="/warehouse" tag="li">仓库</nuxt-link>
+          <nuxt-link to="/archive" tag="li">归档</nuxt-link>
+          <nuxt-link to="/about" tag="li">关于我</nuxt-link>
         </ul>
         <div class="serach">
-          <a-input-search placeholder="请输入文章关键词"
-                          style="width: 200px"
-                          @search="onSearch" />
+          <a-input-search
+            placeholder="请输入文章关键词"
+            style="width: 200px"
+            @search="onSearch"
+          />
         </div>
       </div>
     </div>
@@ -52,7 +42,7 @@
 <script>
 export default {
   name: 'Header',
-  data () {
+  data() {
     return {
       page: 1,
       limit: 10,
@@ -60,12 +50,12 @@ export default {
     }
   },
   methods: {
-    isMenu () {
+    isMenu() {
       this.ismenu = !this.ismenu
     },
-    onSearch (value) {
+    onSearch(value) {
       if (value === '') {
-        this.$message.error('搜索不能为空哦');
+        this.$message.error('搜索不能为空哦')
         return
       }
       this.ismenu = !this.ismenu

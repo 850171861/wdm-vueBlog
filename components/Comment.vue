@@ -151,14 +151,14 @@ export default {
         return
       }
       let picArr = [
-        '/picImg/pic1.png',
-        '/picImg/pic2.png',
-        '/picImg/pic3.png',
-        '/picImg/pic4.png',
-        '/picImg/pic5.png',
-        '/picImg/pic6.png',
-        '/picImg/pic7.png',
-        '/picImg/pic8.png',
+        '../assets/picImg/pic1.png',
+        '../assets/picImg/pic2.png',
+        '../assets/picImg/pic3.png',
+        '../assets/picImg/pic4.png',
+        '../assets/picImg/pic5.png',
+        '../assets/picImg/pic6.png',
+        '../assets/picImg/pic7.png',
+        '../assets/picImg/pic8.png',
       ]
       let pic = picArr[Math.floor(Math.random() * picArr.length)]
       let tid = this.$route.params.id

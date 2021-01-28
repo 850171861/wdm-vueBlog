@@ -18,7 +18,7 @@ class ArticleController {
       page,
       limit
     } = ctx.query
-    const query = {}
+    const query = { status: 1 }
     if (tag) {
       query.tag = tag
     }
@@ -114,42 +114,42 @@ class ArticleController {
     const total = await article.find().count()
     // 获取归档数据
     const data = await article.aggregate([{
-        $project: {
-          title: '$title',
-          reads: '$reads',
-          createdTime: {
-            $substr: [{
-              $add: ['$created', 28800000]
-            }, 0, 10]
-          },
-          created: {
-            $substr: [{
-              $add: ['$created', 28800000]
-            }, 0, 4]
-          }
-        }
-      },
-      {
-        $group: {
-          _id: '$created',
-          yearList: {
-            $push: {
-              id: '$_id',
-              title: '$title',
-              reads: '$reads',
-              created: '$createdTime'
-            }
-          },
-          count: {
-            $sum: 1
-          }
-        }
-      },
-      {
-        $sort: {
-          _id: -1 // 执行完 $group，得到的结果集按照_id排列
+      $project: {
+        title: '$title',
+        reads: '$reads',
+        createdTime: {
+          $substr: [{
+            $add: ['$created', 28800000]
+          }, 0, 10]
+        },
+        created: {
+          $substr: [{
+            $add: ['$created', 28800000]
+          }, 0, 4]
         }
       }
+    },
+    {
+      $group: {
+        _id: '$created',
+        yearList: {
+          $push: {
+            id: '$_id',
+            title: '$title',
+            reads: '$reads',
+            created: '$createdTime'
+          }
+        },
+        count: {
+          $sum: 1
+        }
+      }
+    },
+    {
+      $sort: {
+        _id: -1 // 执行完 $group，得到的结果集按照_id排列
+      }
+    }
     ])
 
     ctx.body = {
@@ -200,6 +200,8 @@ class ArticleController {
     const {
       body
     } = ctx.request
+
+
     const result = await article(body).save()
     ctx.body = {
       code: 200,
@@ -207,6 +209,7 @@ class ArticleController {
       msg: '添加成功'
     }
   }
+
   // 文章修改
   async updateArticle(ctx) {
     const {
@@ -244,12 +247,14 @@ class ArticleController {
       }
     }
   }
+
   // 文章删除
   async deleteArticle(ctx) {
     const {
       _id
     } = ctx.request.body
-    const result = await article.deleteOne(_id)
+    const result = await article.deleteOne({ _id })
+
     if (result.ok == 1) {
       ctx.body = {
         code: 200,
