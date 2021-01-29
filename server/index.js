@@ -5,7 +5,8 @@ import koaBody from 'koa-body'
 import path from 'path'
 import cors from '@koa/cors'
 import JWT from 'koa-jwt'
-
+import log4js from './config/log4.js'
+import errorHandle from './config/errorHandle'
 // Import and Set Nuxt.js options
 import config from '../nuxt.config.js'
 
@@ -34,13 +35,19 @@ const jwt = JWT({
 }).unless({
   path: ['/', /^\/__webpack_hmr/, /^\/_nuxt/, /^\/images/, /^\/article/, /^\/warehouse/, /^\/category/, /^\/api/, /^\/login/]
 })
+// 处理请求错误
+app.use(errorHandle)
+// 身份认证
 app.use(jwt)
+
+// 日志
+app.use(log4js.koaLogger(log4js.getLogger('access'), { level: 'auto' }))
 // 路由挂载
 app.use(router())
 
 config.dev = app.env !== 'production'
 
-async function start () {
+async function start() {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 

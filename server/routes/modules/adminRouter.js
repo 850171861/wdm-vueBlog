@@ -4,6 +4,7 @@ import TagController from '../../api/TagController'
 import CommentsController from '../../api/CommentController'
 import WarehouserController from '../../api/WarehouseController'
 import ArticleController from '../../api/ArticleController'
+import ErrorLogController from '../../api/ErrorLogController'
 const router = new Router()
 
 router.prefix('/admin')
@@ -40,5 +41,10 @@ router.post('/addArticle', ArticleController.addArticle)
 router.post('/updateArticle', ArticleController.updateArticle)
 // 删除文章
 router.post('/deleteArticle', ArticleController.deleteArticle)
+
+// 获取错误日志
+router.get('/getErrorLog', ErrorLogController.getErrorLog)
+// 删除错误日志
+router.post('/deleteErrorLog', ErrorLogController.deleteErrorLog)
 
 export default router

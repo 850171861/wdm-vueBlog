@@ -38,6 +38,8 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Don't upload
+static/
 # TypeScript v1 declaration files
 typings/
 
