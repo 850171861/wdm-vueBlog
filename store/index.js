@@ -33,6 +33,7 @@ export const actions = {
       } = await categoryList({
         status: 1
       })
+
       commit('category/setCategoryList', {
         categoryList: data
       })

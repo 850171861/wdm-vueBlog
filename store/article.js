@@ -9,18 +9,18 @@ const state = () => ({
 })
 
 const mutations = {
-  setHotArticle (state, value) {
+  setHotArticle(state, value) {
     state.hotArticle = value.hotArticle
   },
 
-  setArticleList (state, value) {
+  setArticleList(state, value) {
     state.articleList = []
     state.articleList = value.articleList
   }
 }
 
 const actions = {
-  async setArticleList ({
+  async setArticleList({
     commit,
     state
   }, obj) {

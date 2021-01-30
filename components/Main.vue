@@ -16,11 +16,11 @@ import side from '@/components/Side'
 export default {
   name: 'Main',
   components: { side },
-  data() {
+  data () {
     return {}
   },
   methods: {},
-  mounted() {},
+  mounted () { },
 }
 </script>
 

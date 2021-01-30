@@ -21,19 +21,50 @@ class TagController {
       }
     }
     const data = await tag.aggregate([{
-      $lookup: {
-        from: 'articles',
-        localField: 'name',
-        foreignField: 'tag',
-        as: 'articleCount'
-      }
-    },
+        $lookup: {
+          from: 'articles',
+          localField: 'name',
+          foreignField: 'tag',
+          as: 'articleCount'
+        }
+      },
       match,
-    {
-      $sort: {
-        created: -1
+      // {
+      //   $unwind: "$articleCount"
+      // },
+      // {
+      //   $match: {
+      //     'articleCount.status': 1
+      //   }
+      // },
+      // {
+      //   $project: {
+      //     _id: "$_id",
+      //     name: "$name",
+      //     created: "$created",
+      //     count: {
+      //       $add: 1
+      //     }
+      //   }
+      // },
+      // {
+      //   $group: {
+      //     _id: {
+      //       _id: "$_id",
+      //       name: "$name",
+      //       created: "$created",
+      //     },
+      //     articleCount: {
+      //       $sum: "$count"
+      //     },
+
+      //   }
+      // },
+      {
+        $sort: {
+          created: -1
+        }
       }
-    }
     ])
 
     data.forEach(item => {

@@ -11,7 +11,7 @@ class CategoryController {
     if (status == 1) {
       match = {
         $match: {
-          status: 1
+          'status': 1,
         }
       }
     } else {
@@ -19,26 +19,28 @@ class CategoryController {
         $match: {}
       }
     }
+
     const data = await category.aggregate([{
-      $lookup: {
-        from: 'articles',
-        localField: 'name',
-        foreignField: 'category',
-        as: 'articleCount'
-      }
-    },
+        $lookup: {
+          from: 'articles',
+          localField: 'name',
+          foreignField: 'category',
+          as: 'articleCount'
+        }
+      },
       match,
-    {
-      $sort: {
-        created: -1
+      {
+        $sort: {
+          created: -1
+        }
       }
-    }
     ])
 
     data.forEach(item => {
       item.articleCount = item.articleCount.length
       item.created = moment(item.created).format('YYYY-MM-DD HH:mm:ss')
     })
+
     ctx.body = {
       code: 200,
       data: data

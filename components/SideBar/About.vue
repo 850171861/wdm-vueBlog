@@ -1,26 +1,23 @@
 <template>
   <!-- 关于个人 -->
   <section class="m-top">
-    <a-card title="关于" :bordered="false" :hoverable="true">
-      <i class="icon"><img src="@/assets/images/my.png" alt="标签" /></i>
+    <a-card title="关于"
+            :bordered="false"
+            :hoverable="true">
+      <i class="icon"><img src="@/assets/images/my.png"
+             alt="标签" /></i>
 
       <div class="author">
-        <div class="pic">
-          <img
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="头像"
-          />
-        </div>
-        <div class="name">var author='wdm'</div>
-        <div class="content">指尖改变世界</div>
-        <div class="concat">
-          <ul>
-            <li><img src="@/assets/images/QQ.png" alt="qq" /></li>
-            <li><img src="@/assets/images/wx.png" alt="微信" /></li>
-            <li><img src="@/assets/images/github.png" alt="github" /></li>
-            <li><img src="@/assets/images/email.png" alt="邮箱" /></li>
-          </ul>
-        </div>
+        <p><a href="https://github.com/850171861/wdm-vueBlog">博客</a>技术栈
+        </p>
+        <p>前端：Nuxt.js+Ant Design Vue
+        </p>
+        <p>后端：Vue.js+Ant Design Vue
+        </p>
+        <p>服务端：node.js
+        </p>
+        <p>数据库：Mongodb
+        </p>
       </div>
     </a-card>
   </section>
@@ -38,28 +35,8 @@ export default {
   width: 100%;
   position: relative;
   .author {
-    text-align: center;
-    .pic {
-      img {
-        width: 100px;
-        height: 100px;
-        border-radius: 20px;
-        margin: auto;
-      }
-    }
-    .name {
-      font-size: 22px;
-    }
-    .concat {
-      margin-top: 36px;
-      ul {
-        padding: 0;
-        list-style: none;
-        display: flex;
-        li {
-          width: 25%;
-        }
-      }
+    a {
+      margin-right: 5px;
     }
   }
 }

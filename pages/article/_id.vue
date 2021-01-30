@@ -1,21 +1,25 @@
 <template>
   <div class="article_id clearfix">
-    <div class="left-content" v-if="articleDetail.artTitle">
+    <div class="left-content"
+         v-if="articleDetail.artTitle">
       <h2 class="article-title">{{ data.title }}</h2>
       <p class="article-info">
-        <span>发布于：{{ data.created | moment }}</span
-        ><span>{{ data.reads }}次浏览</span
-        ><span>{{ data.answer }} 条评论</span>
+        <span>发布于：{{ data.created | moment }}</span><span>{{ data.reads }}次浏览</span><span>{{ data.answer }} 条评论</span>
       </p>
-      <div class="article-content" id="r-md-preview">
-        <div class="md" v-html="data.content" ref="content" id="md"></div>
+      <div class="article-content"
+           id="r-md-preview">
+        <div class="md"
+             id="md"
+             v-html="data.content"></div>
       </div>
+
       <!-- 相关文章 -->
       <div class="related-articles">
         <div class="related">相关文章</div>
         <ul class="ul-related">
           <li v-for="(item, index) in related">
-            <nuxt-link tag="a" :to="item._id">{{ item.title }}</nuxt-link>
+            <nuxt-link tag="a"
+                       :to="item._id">{{ item.title }}</nuxt-link>
           </li>
         </ul>
         <ul class="ul-copyright">
@@ -42,22 +46,23 @@ import filters from '@/directive/relativeTime'
 
 //引入marked解析模块 与 代码高亮插件 以及对应的样式文件
 import marked from 'marked'
-import hljs from 'highlight.js'
 // highlight.js  代码高亮指令
-import Hljs from 'highlight.js'
+import hljs from 'highlight.js'
 // 代码高亮风格，选择更多风格需导入 node_modules/hightlight.js/styles/ 目录下其它css文件
 import 'highlight.js/styles/tomorrow-night.css'
+
 
 export default {
   name: 'Article',
   components: { comment },
   filters: filters,
-  data() {
+  data () {
     return {
       articleDetail: { artTitle: true },
     }
   },
-  mounted() {
+  mounted () {
+
     //基本配置与代码高亮配置
     marked.setOptions({
       renderer: new marked.Renderer(),
@@ -72,27 +77,15 @@ export default {
         return hljs.highlightAuto(code).value
       },
     })
-    var para = document.createElement('span')
-    var para0 = document.createElement('span')
     var pre = document.getElementById('md').getElementsByTagName('pre')
-
     for (let i = 0; i < pre.length; i++) {
-      let para = document.createElement('span')
+      let div = document.createElement('div')
+      div.className = "three-point"
       let first = pre[i].firstElementChild
-      pre[i].insertBefore(para, first)
+      pre[i].insertBefore(div, first)
     }
-    // var first = pre[0].firstElementChild
-    // pre[0].insertBefore(para0, first)
-    // console.log(first)
-
-    // var first1 = pre[1].firstElementChild
-    // pre[1].insertBefore(para, first1)
-
-    // var first2 = pre[2].firstElementChild
-    // pre[2].insertBefore(para, first2)
   },
-
-  async asyncData({ params, error }) {
+  async asyncData ({ params, error }) {
     const { code, data, related } = await getArticleInfo(params)
     if (code === 200) {
       data.content = marked(data.content)
@@ -213,7 +206,7 @@ pre {
   margin-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 55%);
-  span {
+  .three-point {
     display: block;
     background: url(http://localhost:3000/images/20210128/1.png) no-repeat
       rgb(39, 40, 34);

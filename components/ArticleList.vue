@@ -22,9 +22,13 @@
           </span>
         </template>
         <template slot="actions">
-          <span>
+          <span v-if="item.category_associated.length !== 0">
             <a-icon type="bars"
-                    style="margin-right: 8px" /> {{item.category}}
+                    style="margin-right: 8px" /> {{item.category_associated[0].name}}
+          </span>
+          <span v-else>
+            <a-icon type="bars"
+                    style="margin-right: 8px" /> 暂无类别
           </span>
         </template>
         <img slot="extra"
@@ -49,25 +53,25 @@
 import filters from '@/directive/relativeTime'
 export default {
   name: 'articleList',
-  data() {
+  data () {
     return {
       page: 1,
       limit: 10,
     }
   },
   computed: {
-    articleList() {
+    articleList () {
       return this.$store.state.article.articleList
     },
   },
   filters: filters,
-  mounted() {
+  mounted () {
     this.onChange()
   },
   methods: {
-    onChange(e) {
+    onChange (e) {
       let page = e || this.page
-      let obj = { page: page, limit: this.limit }
+      let obj = { status: 1, page: page, limit: this.limit }
       let route = this.$route
       if (route.name === 'search-id') {
         obj['search'] = route.query.search
@@ -80,8 +84,8 @@ export default {
       }
       this.$store.dispatch('article/setArticleList', obj)
     },
-    getList() {
-      let obj = { page: this.page, limit: this.limit }
+    getList () {
+      let obj = { status: 1, page: this.page, limit: this.limit }
       let route = this.$route
       if (route.name === 'search-id') {
         obj['search'] = route.query.search

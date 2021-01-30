@@ -16,17 +16,22 @@ class ArticleController {
       category,
       search,
       page,
-      limit
+      limit,
+      status
     } = ctx.query
-    const query = { status: 1 }
+    const query = {}
+    if (status == 1) {
+      query.status = 1
+    }
     if (tag) {
       query.tag = tag
     }
     if (category) {
       query.category = category
     }
+    let regexp
     if (search) {
-      const regexp = new RegExp(search, 'i')
+      regexp = new RegExp(search, 'i')
       query.$or = [{
         title: {
           $regex: regexp
@@ -38,9 +43,32 @@ class ArticleController {
       }]
     }
 
-    const data = await article.find(query).skip((page - 1) * parseInt(limit)).limit(parseInt(limit)).sort({
-      created: -1
-    })
+
+
+    const data = await article.aggregate([{
+        $lookup: {
+          from: 'categorys',
+          localField: 'category',
+          foreignField: 'name',
+          as: 'category_associated'
+        }
+      },
+      {
+        $match: query
+      },
+      {
+        $skip: (page - 1) * parseInt(limit)
+      },
+      {
+        $limit: parseInt(limit)
+      },
+
+      {
+        $sort: {
+          created: -1
+        }
+      }
+    ])
     const total = await article.find(query).count()
 
     ctx.body = {
@@ -98,7 +126,9 @@ class ArticleController {
 
   // 热门文章
   async hotArticle(ctx) {
-    const result = await article.find().sort({
+    const result = await article.find({
+      status: 1
+    }).sort({
       reads: -1
     }).limit(10)
 
@@ -114,42 +144,42 @@ class ArticleController {
     const total = await article.find().count()
     // 获取归档数据
     const data = await article.aggregate([{
-      $project: {
-        title: '$title',
-        reads: '$reads',
-        createdTime: {
-          $substr: [{
-            $add: ['$created', 28800000]
-          }, 0, 10]
-        },
-        created: {
-          $substr: [{
-            $add: ['$created', 28800000]
-          }, 0, 4]
-        }
-      }
-    },
-    {
-      $group: {
-        _id: '$created',
-        yearList: {
-          $push: {
-            id: '$_id',
-            title: '$title',
-            reads: '$reads',
-            created: '$createdTime'
+        $project: {
+          title: '$title',
+          reads: '$reads',
+          createdTime: {
+            $substr: [{
+              $add: ['$created', 28800000]
+            }, 0, 10]
+          },
+          created: {
+            $substr: [{
+              $add: ['$created', 28800000]
+            }, 0, 4]
           }
-        },
-        count: {
-          $sum: 1
+        }
+      },
+      {
+        $group: {
+          _id: '$created',
+          yearList: {
+            $push: {
+              id: '$_id',
+              title: '$title',
+              reads: '$reads',
+              created: '$createdTime'
+            }
+          },
+          count: {
+            $sum: 1
+          }
+        }
+      },
+      {
+        $sort: {
+          _id: -1 // 执行完 $group，得到的结果集按照_id排列
         }
       }
-    },
-    {
-      $sort: {
-        _id: -1 // 执行完 $group，得到的结果集按照_id排列
-      }
-    }
     ])
 
     ctx.body = {
@@ -253,7 +283,9 @@ class ArticleController {
     const {
       _id
     } = ctx.request.body
-    const result = await article.deleteOne({ _id })
+    const result = await article.deleteOne({
+      _id
+    })
 
     if (result.ok == 1) {
       ctx.body = {
