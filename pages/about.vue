@@ -5,14 +5,14 @@
     </div>
     <div class="clearfix about-me-detail">
       <div class="about-me-left">
-        <img src="../assets/images/pic.jpg" alt="重庆崽儿Brand" />
+        <img src="../assets/images/pic.jpg"
+             alt="重庆崽儿Brand" />
         <h5>吴东明</h5>
       </div>
       <ul class="about-me-right">
         <li>前端开发：2020年专科科毕业～今日</li>
         <li>90后瘦宅，篮球、羽毛球等球类</li>
         <li>工作主要使用的是Vue.js、Node.js</li>
-        <li>喜欢看篮球，詹姆斯粉</li>
         <li>未完待续</li>
       </ul>
     </div>
@@ -22,21 +22,21 @@
     <div class="site-box">
       <div class="site-descript">
         本站建立，是自己用来记录学习，工作和一切自己想记录的东西的地方。欢迎访问
-        <a href="http://www.baidu.com">我的博客</a>。
+        <a href="http://www.wudongming.com">我的博客</a>。
         <div>
           博客界面有些丑，但是暂时不打算改了，如果你有一些简约看着又不错的博客界面，可以给我留言或者邮件，我参考参考。
         </div>
         <div style="text-align: center">
-          <img src="../assets/images/Hi-brand-dongtu.gif" alt="hi-brand" />
+          <img src="../assets/images/Hi-brand-dongtu.gif"
+               alt="hi-brand" />
         </div>
       </div>
-      <div>本站所用技术栈：</div>
       <div class="site-tech">
-        <div>前端：Nuxt.js+Ant Design Vue</div>
-        <div>后端：Vue.js+Ant Design Vue</div>
-        <div>服务端：Koa2.js</div>
-        <div>数据库：Mongodb</div>
-        <div>本站源码：待上线</div>
+        <div><a target="_blank"
+             href="https://github.com/850171861"><img src="../assets/images/github.png">https://github.com/850171861</a></div>
+        <div><a target="_blank"
+             href="mailto:850171861@qq.com"><img src="../assets/images/email.png">850171861@qq.com</a></div>
+
       </div>
     </div>
   </div>
@@ -45,21 +45,21 @@
 <script>
 export default {
   name: 'about',
-  head() {
+  head () {
     return {
       title: '关于',
     }
   },
   computed: {
-    linkList() {
+    linkList () {
       return this.$store.state.link.list
     },
   },
-  data() {
+  data () {
     return {}
   },
   methods: {},
-  mounted() {},
+  mounted () { },
 }
 </script>
 
@@ -134,8 +134,18 @@ export default {
       padding-bottom: 15px;
     }
     .site-tech {
-      padding: 8px 0 8px 2em;
-      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      a {
+        color: #000;
+        font-size: 20px;
+        line-height: 50px;
+        img {
+          margin-right: 10px;
+        }
+      }
     }
   }
   @media screen and (min-width: 769px) {

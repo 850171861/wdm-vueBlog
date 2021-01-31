@@ -10,10 +10,24 @@ const state = () => ({
 const mutations = {
   setCommentList(state, value) {
     if (value.commentList.length === 0) {
+      state.commentList = []
       state.more = '没有更多了'
+      return
     }
-    const data = state.commentList.concat(value.commentList)
-    state.commentList = data
+
+    if (state.commentList.length === 0) {
+      state.commentList = value.commentList
+      return
+    }
+
+    if (state.commentList[0].tid != value.commentList[0].tid) {
+      state.commentList = []
+      state.commentList = value.commentList
+    } else {
+      const data = state.commentList.concat(value.commentList)
+      state.commentList = data
+    }
+
   },
   // 改变commentList更新评论视图
   updateCommentList(state, value) {

@@ -62,7 +62,6 @@ export default {
     }
   },
   mounted () {
-
     //基本配置与代码高亮配置
     marked.setOptions({
       renderer: new marked.Renderer(),
