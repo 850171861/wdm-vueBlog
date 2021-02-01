@@ -5,8 +5,7 @@
     </div>
     <div class="clearfix about-me-detail">
       <div class="about-me-left">
-        <img src="../assets/images/pic.jpg"
-             alt="重庆崽儿Brand" />
+        <img src="../assets/images/pic.jpg" alt="吴东明" />
         <h5>吴东明</h5>
       </div>
       <ul class="about-me-right">
@@ -27,16 +26,22 @@
           博客界面有些丑，但是暂时不打算改了，如果你有一些简约看着又不错的博客界面，可以给我留言或者邮件，我参考参考。
         </div>
         <div style="text-align: center">
-          <img src="../assets/images/Hi-brand-dongtu.gif"
-               alt="hi-brand" />
+          <img src="../assets/images/dongtu.gif" alt="hi-brand" />
         </div>
       </div>
       <div class="site-tech">
-        <div><a target="_blank"
-             href="https://github.com/850171861"><img src="../assets/images/github.png">https://github.com/850171861</a></div>
-        <div><a target="_blank"
-             href="mailto:850171861@qq.com"><img src="../assets/images/email.png">850171861@qq.com</a></div>
-
+        <div>
+          <a target="_blank" href="https://github.com/850171861"
+            ><img
+              src="../assets/images/github.png"
+            />https://github.com/850171861</a
+          >
+        </div>
+        <div>
+          <a target="_blank" href="mailto:850171861@qq.com"
+            ><img src="../assets/images/email.png" />850171861@qq.com</a
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -45,21 +50,21 @@
 <script>
 export default {
   name: 'about',
-  head () {
+  head() {
     return {
       title: '关于',
     }
   },
   computed: {
-    linkList () {
+    linkList() {
       return this.$store.state.link.list
     },
   },
-  data () {
+  data() {
     return {}
   },
   methods: {},
-  mounted () { },
+  mounted() {},
 }
 </script>
 

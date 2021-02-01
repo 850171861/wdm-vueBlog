@@ -8,11 +8,11 @@ const state = () => ({
 })
 
 const mutations = {
-  setCommentList(state, value) {
+  setCommentList (state, value) {
     if (value.commentList.length === 0) {
-      state.commentList = []
       state.more = '没有更多了'
-      return
+    } else {
+      state.more = '查看更多评论'
     }
 
     if (state.commentList.length === 0) {
@@ -20,17 +20,16 @@ const mutations = {
       return
     }
 
-    if (state.commentList[0].tid != value.commentList[0].tid) {
+    if (state.commentList[0].tid !== value.commentList[0].tid || state.commentList[0]._id === value.commentList[0]._id) {
       state.commentList = []
       state.commentList = value.commentList
     } else {
       const data = state.commentList.concat(value.commentList)
       state.commentList = data
     }
-
   },
   // 改变commentList更新评论视图
-  updateCommentList(state, value) {
+  updateCommentList (state, value) {
     if (value.beReplyName === '') {
       state.commentList.unshift(value)
     } else {
@@ -49,7 +48,7 @@ const mutations = {
 }
 
 const actions = {
-  async setCommentList({
+  async setCommentList ({
     commit,
     state
   }, query) {

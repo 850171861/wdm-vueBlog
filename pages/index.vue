@@ -11,6 +11,23 @@ export default {
   components: {
     list: list,
   },
+  head() {
+    return {
+      title: '吴东明个人博客',
+      meta: [
+        {
+          hid: 'indexdescription',
+          name: 'description',
+          content: '吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+        {
+          hid: 'indexkeywords',
+          name: 'description',
+          content: '吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+      ],
+    }
+  },
 }
 </script>
 

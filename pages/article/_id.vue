@@ -1,26 +1,26 @@
 <template>
   <div class="article_id clearfix">
-    <div class="left-content"
-         v-if="articleDetail.artTitle">
+    <div class="left-content" v-if="articleDetail.artTitle">
       <h2 class="article-title">{{ data.title }}</h2>
       <p class="article-info">
-        <span>发布于：{{ data.created | moment }}</span><span>{{ data.reads }}次浏览</span><span>{{ data.answer }} 条评论</span>
+        <span>发布于：{{ data.created | moment }}</span
+        ><span>{{ data.reads }}次浏览</span
+        ><span>{{ data.answer }} 条评论</span>
       </p>
-      <div class="article-content"
-           id="r-md-preview">
-        <div class="md"
-             id="md"
-             v-html="data.content"></div>
+      <div class="article-content" id="r-md-preview">
+        <div class="md" id="md" v-html="data.content"></div>
       </div>
 
       <!-- 相关文章 -->
       <div class="related-articles">
         <div class="related">相关文章</div>
-        <ul class="ul-related">
-          <li v-for="(item, index) in related">
-            <nuxt-link tag="a"
-                       :to="item._id">{{ item.title }}</nuxt-link>
+        <ul class="ul-related" v-if="related.length !== 0">
+          <li v-for="(item, index) in related" :key="index">
+            <nuxt-link tag="a" :to="item._id">{{ item.title }}</nuxt-link>
           </li>
+        </ul>
+        <ul v-else>
+          <li>暂无相关文章</li>
         </ul>
         <ul class="ul-copyright">
           <li><span>本文作者：</span> var author='wdm'</li>
@@ -51,17 +51,16 @@ import hljs from 'highlight.js'
 // 代码高亮风格，选择更多风格需导入 node_modules/hightlight.js/styles/ 目录下其它css文件
 import 'highlight.js/styles/tomorrow-night.css'
 
-
 export default {
   name: 'Article',
   components: { comment },
   filters: filters,
-  data () {
+  data() {
     return {
       articleDetail: { artTitle: true },
     }
   },
-  mounted () {
+  mounted() {
     //基本配置与代码高亮配置
     marked.setOptions({
       renderer: new marked.Renderer(),
@@ -79,12 +78,12 @@ export default {
     var pre = document.getElementById('md').getElementsByTagName('pre')
     for (let i = 0; i < pre.length; i++) {
       let div = document.createElement('div')
-      div.className = "three-point"
+      div.className = 'three-point'
       let first = pre[i].firstElementChild
       pre[i].insertBefore(div, first)
     }
   },
-  async asyncData ({ params, error }) {
+  async asyncData({ params, error }) {
     const { code, data, related } = await getArticleInfo(params)
     if (code === 200) {
       data.content = marked(data.content)
@@ -111,9 +110,9 @@ export default {
     li {
       a {
         display: inline-block;
-        height: 24px;
-        line-height: 24px;
-        font-size: 14px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 18px;
         color: #666;
         text-decoration: underline;
       }

@@ -53,23 +53,23 @@
 import filters from '@/directive/relativeTime'
 export default {
   name: 'articleList',
-  data () {
+  data() {
     return {
       page: 1,
       limit: 10,
     }
   },
   computed: {
-    articleList () {
+    articleList() {
       return this.$store.state.article.articleList
     },
   },
   filters: filters,
-  mounted () {
+  mounted() {
     this.onChange()
   },
   methods: {
-    onChange (e) {
+    onChange(e) {
       let page = e || this.page
       let obj = { status: 1, page: page, limit: this.limit }
       let route = this.$route
@@ -84,7 +84,7 @@ export default {
       }
       this.$store.dispatch('article/setArticleList', obj)
     },
-    getList () {
+    getList() {
       let obj = { status: 1, page: this.page, limit: this.limit }
       let route = this.$route
       if (route.name === 'search-id') {
@@ -106,9 +106,13 @@ export default {
   position: relative;
   flex-direction: row-reverse;
   border-bottom: 2px dotted #e8e8e8 !important;
-  .ant-list-item-extra {
-    margin-right: 40px;
+  @media screen and (min-width: 420px) {
+    .ant-list-item-extra {
+      margin-right: 20px;
+      margin-left: 0px;
+    }
   }
+
   .ant-list-item-meta {
     margin-bottom: 32px;
     a {

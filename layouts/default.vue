@@ -1,23 +1,21 @@
 <template>
   <div class="layout_container">
     <AppHeader></AppHeader>
-    <transition>
-      <AppMain></AppMain>
-    </transition>
+    <AppMain></AppMain>
     <AppFooter></AppFooter>
   </div>
 </template>
 
-<script> 
+<script>
 import Header from '@/components/Header.vue'
 import Main from '@/components/Main.vue'
 import Footer from '@/components/Footer.vue'
 export default {
   components: {
-    'AppHeader': Header,
-    'AppMain': Main,
-    'AppFooter': Footer
-  }
+    AppHeader: Header,
+    AppMain: Main,
+    AppFooter: Footer,
+  },
 }
 </script>
 
@@ -35,7 +33,6 @@ li {
   margin-top: 0;
   margin-bottom: 0;
 }
-
 .layout_container {
   background-color: #f6f6f6;
 }
