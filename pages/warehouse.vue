@@ -20,6 +20,25 @@ export default {
       warehouseList: data,
     }
   },
+  head() {
+    return {
+      title: '仓库-吴东明个人博客',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            '仓库-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            '仓库-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+      ],
+    }
+  },
 }
 </script>
 

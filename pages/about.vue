@@ -65,6 +65,25 @@ export default {
   },
   methods: {},
   mounted() {},
+  head() {
+    return {
+      title: '关于-吴东明个人博客',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            '关于-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            '关于-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+      ],
+    }
+  },
 }
 </script>
 

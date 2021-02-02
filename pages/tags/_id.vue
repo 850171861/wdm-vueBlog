@@ -1,8 +1,14 @@
 <template>
   <div class="tags">
     <section class="tags-header">
-      <p class="title">与<span>{{$route.params.id}}</span>相关的文章</p>
-      <p class="total">共有<span>{{this.$store.state.article.articleList.total}}</span>篇</p>
+      <p class="title">
+        与<span>{{ $route.params.id }}</span
+        >相关的文章
+      </p>
+      <p class="total">
+        共有<span>{{ this.$store.state.article.articleList.total }}</span
+        >篇
+      </p>
     </section>
     <list></list>
   </div>
@@ -15,8 +21,29 @@ export default {
   components: {
     list: list,
   },
-  data () {
+  data() {
     return {}
+  },
+  head() {
+    return {
+      title: this.$route.params.id + '-吴东明个人博客',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.$route.params.id +
+            '-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            this.$route.params.id +
+            '关于-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+      ],
+    }
   },
 }
 </script>

@@ -16,13 +16,13 @@ export default {
       title: '吴东明个人博客',
       meta: [
         {
-          hid: 'indexdescription',
+          hid: 'description',
           name: 'description',
           content: '吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
         },
         {
-          hid: 'indexkeywords',
-          name: 'description',
+          hid: 'keywords',
+          name: 'keywords',
           content: '吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
         },
       ],

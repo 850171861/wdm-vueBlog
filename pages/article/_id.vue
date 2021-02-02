@@ -86,11 +86,31 @@ export default {
   async asyncData({ params, error }) {
     const { code, data, related } = await getArticleInfo(params)
     if (code === 200) {
+      console.log(data)
       data.content = marked(data.content)
       return {
         data: data,
         related: related,
       }
+    }
+  },
+  head() {
+    return {
+      title: this.data.title + '-吴东明个人博客',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.data.description,
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            this.data.title +
+            '关于-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+      ],
     }
   },
 }

@@ -4,7 +4,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: '吴东明个人博客',
     meta: [{
       charset: 'utf-8'
     },
@@ -15,7 +15,7 @@ module.exports = {
     {
       hid: 'description',
       name: 'description',
-      content: process.env.npm_package_description || ''
+      content: '吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb'
     }
     ],
     link: [{
@@ -67,6 +67,6 @@ module.exports = {
      ** You can extend webpack config here
      */
 
-    extend (config, ctx) { }
+    extend(config, ctx) { }
   }
 }

@@ -2,10 +2,12 @@
   <div class="search">
     <section class="artList-by-type">
       <p class="type-title">
-        搜索<span>{{ $route.query.search }}</span>相关的文章
+        搜索<span>{{ $route.query.search }}</span
+        >相关的文章
       </p>
       <p class="type-total">
-        共找到<span>{{this.$store.state.article.articleList.total}}</span>篇
+        共找到<span>{{ this.$store.state.article.articleList.total }}</span
+        >篇
       </p>
     </section>
     <list></list>
@@ -18,6 +20,27 @@ export default {
   name: 'search',
   components: {
     list: list,
+  },
+  head() {
+    return {
+      title: this.$route.query.search + '-吴东明个人博客',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            this.$route.query.search +
+            '-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            this.$route.query.search +
+            '关于-吴东明个人博客,前端开发,vue.js,node.js,nuxt.js,Mongodb',
+        },
+      ],
+    }
   },
 }
 </script>
